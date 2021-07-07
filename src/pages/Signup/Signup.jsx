@@ -2,6 +2,7 @@ import React from 'react';
 
 import logo from '../../image/logoSocialMedia.png';
 import styled from 'styled-components';
+import { Form, Input, Button } from 'antd';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -24,13 +25,108 @@ const H2 = styled.h2`
   font-weight: 200;
 `;
 
+const ContentLogo = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentHeader = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentForm = styled.form`
+  width: 35%;
+  margin: 0 auto;
+`;
+
+const SubmitButton = styled(Button)`
+  width: 35%;
+`;
+
+const ContentButton = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
 const Signup = () => {
+  const [form] = Form.useForm();
+
+  const onFinish = (e) => {
+    console.log('Success:', e);
+    console.log(e.email);
+    e.email = '';
+    e.password = '';
+    e.confirmPassword = '';
+    e.userHandle = '';
+  };
+
+  const onFinishFailed = (e) => {
+    console.log('Failed:', e);
+  };
+
   return (
     <Container>
       <InfoContent>
-        <Img src={logo} alt='logo' />
-        <H2>Sign up</H2>
+        <ContentLogo>
+          <Img src={logo} alt='logo' />
+        </ContentLogo>
+        <ContentHeader>
+          <H2>Sign up</H2>
+        </ContentHeader>
       </InfoContent>
+      <ContentForm>
+        <Form
+          form={form}
+          name='basic'
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label='email'
+            name='email'
+            rules={[{ required: true, message: 'Please input your email!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label='Password'
+            name='password'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label='Confirm Password'
+            name='confirmPassword'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label='User Handle'
+            name='userHandle'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <ContentButton>
+              <SubmitButton type='primary' onClick={() => form.submit()}>
+                Submit
+              </SubmitButton>
+            </ContentButton>
+          </Form.Item>
+        </Form>
+      </ContentForm>
     </Container>
   );
 };
