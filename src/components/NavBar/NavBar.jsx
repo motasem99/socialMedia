@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import { BellOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -58,19 +60,30 @@ const SignupButton = styled(Button)`
 const NavBar = () => {
   const [userExists, setUserExists] = useState(false);
 
+  let history = useHistory();
+
+  const handleClick = () => {
+    history.push('/');
+    console.log('asdasdasd');
+  };
+
   return (
     <Container>
       {userExists ? (
         <ContainerUserExists>
           <PlusOutlinedIcon />
-          <HomeOutlinedIcon />
+          <HomeOutlinedIcon onClick={handleClick} />
           <BellOutlinedIcon />
         </ContainerUserExists>
       ) : (
         <ContainerUserExists>
-          <LoginButton type='text'>Login</LoginButton>
-          <HomeOutlinedIcon />
-          <SignupButton type='text'>Signup</SignupButton>
+          <LoginButton type='text' href='/login'>
+            Login
+          </LoginButton>
+          <HomeOutlinedIcon onClick={handleClick} />
+          <SignupButton type='text' href='/signup'>
+            Sign up
+          </SignupButton>
         </ContainerUserExists>
       )}
     </Container>
