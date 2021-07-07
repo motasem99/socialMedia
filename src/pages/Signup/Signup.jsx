@@ -10,6 +10,8 @@ const Container = styled.div`
 const InfoContent = styled.div`
   width: 50%;
   margin: 0 auto;
+  display: grid;
+  justify-content: center;
 `;
 
 const Img = styled.img`
