@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
-import Logo from '../../image/logoSocialMedia.png';
+import Logo from '../../image/02.jpg';
 import {
   HeartTwoTone,
   HeartFilled,
@@ -154,7 +154,7 @@ const SideProfile = styled.div`
 `;
 
 const ContentProfile = styled.div`
-  width: 70%;
+  width: 60%;
   box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
     0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 `;
@@ -247,6 +247,11 @@ const Home = () => {
     setLike(true);
   };
 
+  const handleChange = (e) => {
+    const img = e.target.files[0];
+    console.log(img);
+  };
+
   return (
     <Container>
       <SideContent>
@@ -295,7 +300,20 @@ const Home = () => {
         <SideProfile>
           <ContentProfile>
             <ContentAvatarProfile>
-              <Avatar size={210} />
+              <input
+                type='file'
+                accept='image/*'
+                name='userImage'
+                id='userImage'
+                style={{ display: 'none' }}
+                onChange={handleChange}
+              />
+              <label htmlFor='userImage'>
+                <Avatar size={210} src={Logo} />
+                <div style={{ position: 'absolute', top: '30%', left: '80%' }}>
+                  <EditOutlinedIcon />
+                </div>
+              </label>
             </ContentAvatarProfile>
 
             <ContentUserName>
@@ -307,7 +325,7 @@ const Home = () => {
                 <EnvironmentOutlinedIcon /> palestine Gaza
               </ContentProfileStyle>
               <ContentProfileStyle>
-                <UserSite href='gazacontents.com'>
+                <UserSite href='gazacontents.com' target='_blank'>
                   <AliyunOutlinedIcon /> gazacontents.com
                 </UserSite>
               </ContentProfileStyle>
