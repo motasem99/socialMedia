@@ -9,6 +9,11 @@ import {
   CommentOutlined,
   DeleteOutlined,
   ExpandAltOutlined,
+  EnvironmentOutlined,
+  AliyunOutlined,
+  EditOutlined,
+  LogoutOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 const Container = styled.div`
@@ -169,6 +174,67 @@ const LinkUserName = styled.a`
   font-size: 2.2rem;
 `;
 
+const Profile = styled.div`
+  text-align: center;
+`;
+
+const EnvironmentOutlinedIcon = styled(EnvironmentOutlined)`
+  font-size: 1.5rem;
+  color: #1890ff;
+  margin: 0 0.8rem;
+  padding: 0.3rem 0;
+`;
+
+const AliyunOutlinedIcon = styled(AliyunOutlined)`
+  font-size: 1.5rem;
+  color: #1890ff;
+  margin: 0 0.8rem;
+  padding: 0.3rem 0;
+`;
+
+const UserSite = styled.a`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentProfileStyle = styled.p`
+  font-size: 1.1rem;
+  margin-bottom: 0px;
+  padding: 0.3rem 0px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const LogoutAndData = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
+}
+`;
+
+const EditOutlinedIcon = styled(EditOutlined)`
+  font-size: 2rem;
+  color: #1890ff;
+  cursor: pointer;
+  margin-right: 1rem;
+`;
+
+const LogoutOutlinedIcon = styled(LogoutOutlined)`
+  font-size: 2rem;
+  color: #1890ff;
+  cursor: pointer;
+  margin-left: 1rem;
+`;
+
+const CalendarOutlinedIcon = styled(CalendarOutlined)`
+  font-size: 1.5rem;
+  color: #1890ff;
+  cursor: pointer;
+  margin-right: 1rem;
+`;
+
 const Home = () => {
   const [like, setLike] = useState(false);
   const [profileUser, setProfileUser] = useState(false);
@@ -235,6 +301,25 @@ const Home = () => {
             <ContentUserName>
               <LinkUserName href='#'>@test</LinkUserName>
             </ContentUserName>
+            <Profile>
+              <ContentProfileStyle>User Name</ContentProfileStyle>
+              <ContentProfileStyle>
+                <EnvironmentOutlinedIcon /> palestine Gaza
+              </ContentProfileStyle>
+              <ContentProfileStyle>
+                <UserSite href='gazacontents.com'>
+                  <AliyunOutlinedIcon /> gazacontents.com
+                </UserSite>
+              </ContentProfileStyle>
+            </Profile>
+            <ContentProfileStyle>
+              <CalendarOutlinedIcon />
+              Joined Jul 2021
+            </ContentProfileStyle>
+            <LogoutAndData>
+              <LogoutOutlinedIcon />
+              <EditOutlinedIcon />
+            </LogoutAndData>
           </ContentProfile>
         </SideProfile>
       )}
