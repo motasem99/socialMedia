@@ -8,6 +8,7 @@ import {
   HeartFilled,
   CommentOutlined,
   DeleteOutlined,
+  ExpandAltOutlined,
 } from '@ant-design/icons';
 
 const Container = styled.div`
@@ -91,9 +92,14 @@ const ParaPost = styled.p`
 
 const ContentIcon = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-top: 0.5rem;
   margin-left: 1rem;
   align-items: end;
+`;
+
+const Icons = styled.div`
+  display: flex;
 `;
 
 const HeartTwoToneIcon = styled(HeartTwoTone)`
@@ -129,8 +135,43 @@ const DeleteOutlinedIcon = styled(DeleteOutlined)`
   padding: 0.4rem;
 `;
 
+const ExpandAltOutlinedIcon = styled(ExpandAltOutlined)`
+  font-size: 1.8rem;
+  color: #1890ff;
+  cursor: pointer;
+`;
+
+const SideProfile = styled.div`
+  width: 35%;
+  padding: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+`;
+
+const ContentProfile = styled.div`
+  width: 70%;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+`;
+
+const ContentAvatarProfile = styled.div`
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentUserName = styled.div`
+  text-align: center;
+  width: 100%;
+`;
+
+const LinkUserName = styled.a`
+  font-size: 2.2rem;
+`;
+
 const Home = () => {
   const [like, setLike] = useState(false);
+  const [profileUser, setProfileUser] = useState(false);
 
   const handleDislike = () => {
     setLike(false);
@@ -145,13 +186,7 @@ const Home = () => {
       <SideContent>
         <CardPost>
           <ContentAvatar>
-            {' '}
-            <Avatar
-              shape='square'
-              size={64}
-              src={Logo}
-              style={{ width: '100%', height: '100%' }}
-            />
+            <Avatar shape='square' size={190} src={Logo} />
           </ContentAvatar>
           <ContentPost>
             <ContentNameDelete>
@@ -161,29 +196,48 @@ const Home = () => {
             <ParaDate>The date</ParaDate>
             <ParaPost>the description post</ParaPost>
             <ContentIcon>
-              {like ? (
-                <HeartFilledIcon onClick={handleDislike} />
-              ) : (
-                <HeartTwoToneIcon onClick={handleLike} />
-              )}
-              <LikeAndComment> 5 Like</LikeAndComment> <CommentOutlinedIcon />{' '}
-              <LikeAndComment> 8 comments</LikeAndComment>
+              <Icons>
+                {like ? (
+                  <HeartFilledIcon onClick={handleDislike} />
+                ) : (
+                  <HeartTwoToneIcon onClick={handleLike} />
+                )}
+                <LikeAndComment> 5 Like</LikeAndComment> <CommentOutlinedIcon />{' '}
+                <LikeAndComment> 8 comments</LikeAndComment>
+              </Icons>
+              <div>
+                <ExpandAltOutlinedIcon />
+              </div>
             </ContentIcon>
           </ContentPost>
         </CardPost>
       </SideContent>
 
-      <SideLogin>
-        <ContentSideLogin>
-          <Para>No profile found, please login again</Para>
-          <ContentButtons>
-            <Button type='primary'>Login</Button>
-            <Button type='primary' danger>
-              Signup
-            </Button>
-          </ContentButtons>
-        </ContentSideLogin>
-      </SideLogin>
+      {profileUser ? (
+        <SideLogin>
+          <ContentSideLogin>
+            <Para>No profile found, please login again</Para>
+            <ContentButtons>
+              <Button type='primary'>Login</Button>
+              <Button type='primary' danger>
+                Signup
+              </Button>
+            </ContentButtons>
+          </ContentSideLogin>
+        </SideLogin>
+      ) : (
+        <SideProfile>
+          <ContentProfile>
+            <ContentAvatarProfile>
+              <Avatar size={210} />
+            </ContentAvatarProfile>
+
+            <ContentUserName>
+              <LinkUserName href='#'>@test</LinkUserName>
+            </ContentUserName>
+          </ContentProfile>
+        </SideProfile>
+      )}
     </Container>
   );
 };
