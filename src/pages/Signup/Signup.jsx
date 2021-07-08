@@ -50,12 +50,19 @@ const ContentButton = styled.div`
   width: 100%;
 `;
 
+const HaveAccount = styled.div`
+  padding: 1rem;
+`;
+
+const ParaHaveAccount = styled.p`
+  margin-left: 17rem;
+`;
+
 const Signup = () => {
   const [form] = Form.useForm();
 
   const onFinish = (e) => {
     console.log('Success:', e);
-    console.log(e.email);
     e.email = '';
     e.password = '';
     e.confirmPassword = '';
@@ -105,7 +112,9 @@ const Signup = () => {
           <Form.Item
             label='Confirm Password'
             name='confirmPassword'
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              { required: true, message: 'Please input your confirmPassword!' },
+            ]}
           >
             <Input.Password />
           </Form.Item>
@@ -113,7 +122,9 @@ const Signup = () => {
           <Form.Item
             label='User Handle'
             name='userHandle'
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              { required: true, message: 'Please input your userHandle!' },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -126,6 +137,11 @@ const Signup = () => {
             </ContentButton>
           </Form.Item>
         </Form>
+        <HaveAccount>
+          <ParaHaveAccount>
+            Have account? click <a href='/login'>here</a>
+          </ParaHaveAccount>
+        </HaveAccount>
       </ContentForm>
     </Container>
   );
