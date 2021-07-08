@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
 import Logo from '../../image/logoSocialMedia.png';
+import { HeartTwoTone, HeartFilled } from '@ant-design/icons';
 
 const Container = styled.div`
   display: flex;
@@ -33,20 +34,60 @@ const Para = styled.p`
 `;
 
 const CardPost = styled.div`
-  border: 1px solid;
   width: 80%;
-  margin: 2rem auto;
-  height: 170px;
+  margin: 3rem auto;
+  height: 190px;
   display: flex;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 `;
 
 const ContentAvatar = styled.div`
   width: 23%;
 `;
 
-const ContentPost = styled.div``;
+const ContentPost = styled.div`
+  padding: 1rem;
+`;
+
+const NameLink = styled.a`
+  margin-left: 1rem;
+  font-size: 1.5rem;
+`;
+
+const ParaDate = styled.p`
+  margin-left: 1rem;
+  margin-bottom: 0;
+  padding: 0.5rem 0;
+`;
+
+const ParaPost = styled.p`
+  margin-left: 1rem;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
+const HeartTwoToneIcon = styled(HeartTwoTone)`
+  font-size: 1.7rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+`;
+
+const HeartFilledIcon = styled(HeartFilled)`
+  font-size: 1.7rem;
+  color: #1890ff;
+`;
+
+const ContentIcon = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+`;
 
 const Home = () => {
+  const [like, setLike] = useState(false);
+
   return (
     <Container>
       <SideContent>
@@ -60,7 +101,16 @@ const Home = () => {
               style={{ width: '100%', height: '100%' }}
             />
           </ContentAvatar>
-          <ContentPost>content</ContentPost>
+          <ContentPost>
+            <NameLink href='#'>name</NameLink>
+            <ParaDate>The date</ParaDate>
+            <ParaPost>the description post</ParaPost>
+            <ContentIcon>
+              <p>Like:</p> {like ? <HeartFilledIcon /> : <HeartTwoToneIcon />}
+              <p>comment:</p>{' '}
+              {like ? <HeartFilledIcon /> : <HeartTwoToneIcon />}
+            </ContentIcon>
+          </ContentPost>
         </CardPost>
       </SideContent>
 
