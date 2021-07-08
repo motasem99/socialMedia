@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
 import Logo from '../../image/logoSocialMedia.png';
-import { HeartTwoTone, HeartFilled } from '@ant-design/icons';
+import {
+  HeartTwoTone,
+  HeartFilled,
+  CommentOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 
 const Container = styled.div`
   display: flex;
@@ -20,6 +25,14 @@ const SideLogin = styled.div`
   display: grid;
   margin-top: 2rem;
   justify-content: center;
+`;
+
+const ContentSideLogin = styled.div`
+  width: 100%;
+  height: 160px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px,
+    rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
+  padding: 2rem;
 `;
 
 const ContentButtons = styled.div`
@@ -48,6 +61,14 @@ const ContentAvatar = styled.div`
 
 const ContentPost = styled.div`
   padding: 1rem;
+  width: 77%;
+`;
+
+const ContentNameDelete = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const NameLink = styled.a`
@@ -68,25 +89,56 @@ const ParaPost = styled.p`
   font-weight: 600;
 `;
 
+const ContentIcon = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  align-items: end;
+`;
+
 const HeartTwoToneIcon = styled(HeartTwoTone)`
   font-size: 1.7rem;
-  margin-left: 1rem;
   margin-right: 1rem;
+  cursor: pointer;
 `;
 
 const HeartFilledIcon = styled(HeartFilled)`
   font-size: 1.7rem;
   color: #1890ff;
+  margin-right: 1rem;
+  cursor: pointer;
 `;
 
-const ContentIcon = styled.div`
-  display: flex;
-  margin-top: 0.5rem;
+const CommentOutlinedIcon = styled(CommentOutlined)`
+  font-size: 2rem;
+  color: #1890ff;
   margin-left: 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+`;
+
+const LikeAndComment = styled.p`
+  font-size: 1.1rem;
+  font-weight: 400;
+`;
+
+const DeleteOutlinedIcon = styled(DeleteOutlined)`
+  font-size: 2rem;
+  color: red;
+  cursor: pointer;
+  padding: 0.4rem;
 `;
 
 const Home = () => {
   const [like, setLike] = useState(false);
+
+  const handleDislike = () => {
+    setLike(false);
+  };
+
+  const handleLike = () => {
+    setLike(true);
+  };
 
   return (
     <Container>
@@ -102,20 +154,27 @@ const Home = () => {
             />
           </ContentAvatar>
           <ContentPost>
-            <NameLink href='#'>name</NameLink>
+            <ContentNameDelete>
+              <NameLink href='#'>name</NameLink>
+              <DeleteOutlinedIcon />
+            </ContentNameDelete>
             <ParaDate>The date</ParaDate>
             <ParaPost>the description post</ParaPost>
             <ContentIcon>
-              <p>Like:</p> {like ? <HeartFilledIcon /> : <HeartTwoToneIcon />}
-              <p>comment:</p>{' '}
-              {like ? <HeartFilledIcon /> : <HeartTwoToneIcon />}
+              {like ? (
+                <HeartFilledIcon onClick={handleDislike} />
+              ) : (
+                <HeartTwoToneIcon onClick={handleLike} />
+              )}
+              <LikeAndComment> 5 Like</LikeAndComment> <CommentOutlinedIcon />{' '}
+              <LikeAndComment> 8 comments</LikeAndComment>
             </ContentIcon>
           </ContentPost>
         </CardPost>
       </SideContent>
 
       <SideLogin>
-        <div>
+        <ContentSideLogin>
           <Para>No profile found, please login again</Para>
           <ContentButtons>
             <Button type='primary'>Login</Button>
@@ -123,7 +182,7 @@ const Home = () => {
               Signup
             </Button>
           </ContentButtons>
-        </div>
+        </ContentSideLogin>
       </SideLogin>
     </Container>
   );
