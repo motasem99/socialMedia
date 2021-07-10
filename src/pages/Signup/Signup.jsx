@@ -92,7 +92,7 @@ const Signup = () => {
     try {
       dispatch(signup(formData, setError, setSpinnerLoading));
     } catch (err) {
-      console.log(err.request);
+      console.log(err);
     }
   };
 
