@@ -6,6 +6,7 @@ import { Form, Input, Button } from 'antd';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, signup } from '../../features/user/userSlice.js';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -70,7 +71,7 @@ const FormContent = styled(Form)`
 
 const Signup = () => {
   const [form] = Form.useForm();
-  const user = useSelector((state) => state.user.name);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
@@ -80,10 +81,8 @@ const Signup = () => {
   });
 
   const onFinish = (e) => {
-    console.log(e);
+    dispatch(signup(formData));
   };
-
-  console.log(user);
 
   const onFinishFailed = (e) => {
     console.log('Failed:', e);
