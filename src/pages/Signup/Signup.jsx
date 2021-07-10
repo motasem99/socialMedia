@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import logo from '../../image/logoSocialMedia.png';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
+import { Alert } from 'antd';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -69,6 +70,11 @@ const FormContent = styled(Form)`
   }
 `;
 
+const AlertError = styled(Alert)`
+  width: 35%;
+  margin: 0 auto 1rem auto;
+`;
+
 const Signup = () => {
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
@@ -79,9 +85,15 @@ const Signup = () => {
     confirmPassword: '',
     userHandle: '',
   });
+  const [error, setError] = useState();
+  const [spinnerLoading, setSpinnerLoading] = useState(false);
 
   const onFinish = (e) => {
-    dispatch(signup(formData));
+    try {
+      dispatch(signup(formData, setError, setSpinnerLoading));
+    } catch (err) {
+      console.log(err.request);
+    }
   };
 
   const onFinishFailed = (e) => {
@@ -98,6 +110,9 @@ const Signup = () => {
           <H2>Sign up</H2>
         </ContentHeader>
       </InfoContent>
+      {error && (
+        <AlertError message='Error' description={error} type='error' showIcon />
+      )}
       <ContentForm>
         <FormContent
           form={form}
@@ -158,7 +173,11 @@ const Signup = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <SubmitButton type='primary' onClick={() => form.submit()}>
+            <SubmitButton
+              type='primary'
+              onClick={() => form.submit()}
+              loading={spinnerLoading}
+            >
               Submit
             </SubmitButton>
           </Form.Item>
