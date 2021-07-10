@@ -43,6 +43,7 @@ const ContentForm = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
+  width: 35%;
 `;
 
 const SubmitButton = styled(Button)`
@@ -53,9 +54,7 @@ const HaveAccount = styled.div`
   padding: 1rem;
 `;
 
-const ParaHaveAccount = styled.p`
-  margin-left: 17rem;
-`;
+const ParaHaveAccount = styled.p``;
 
 const FormContent = styled(Form)`
   justify-content: center;
