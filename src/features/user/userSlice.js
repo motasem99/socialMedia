@@ -6,8 +6,8 @@ export const counterSlice = createSlice({
     name: null,
   },
   reducers: {
-    setName: (state) => {
-      state.name = 'mutasem';
+    setName: (state, action) => {
+      state.name = action.payload;
     },
   },
 });

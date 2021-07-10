@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import logo from '../../image/logoSocialMedia.png';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -67,14 +70,20 @@ const FormContent = styled(Form)`
 
 const Signup = () => {
   const [form] = Form.useForm();
+  const user = useSelector((state) => state.user.name);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    userHandle: '',
+  });
 
   const onFinish = (e) => {
-    console.log('Success:', e);
-    e.email = '';
-    e.password = '';
-    e.confirmPassword = '';
-    e.userHandle = '';
+    console.log(e);
   };
+
+  console.log(user);
 
   const onFinishFailed = (e) => {
     console.log('Failed:', e);
@@ -104,6 +113,9 @@ const Signup = () => {
           <Form.Item
             label='Email'
             name='email'
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value });
+            }}
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input />
@@ -112,6 +124,9 @@ const Signup = () => {
           <Form.Item
             label='Password'
             name='password'
+            onChange={(e) => {
+              setFormData({ ...formData, password: e.target.value });
+            }}
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password />
@@ -120,6 +135,9 @@ const Signup = () => {
           <Form.Item
             label='Confirm Password'
             name='confirmPassword'
+            onChange={(e) => {
+              setFormData({ ...formData, confirmPassword: e.target.value });
+            }}
             rules={[
               { required: true, message: 'Please input your confirmPassword!' },
             ]}
@@ -130,6 +148,9 @@ const Signup = () => {
           <Form.Item
             label='User Handle'
             name='userHandle'
+            onChange={(e) => {
+              setFormData({ ...formData, userHandle: e.target.value });
+            }}
             rules={[
               { required: true, message: 'Please input your userHandle!' },
             ]}
