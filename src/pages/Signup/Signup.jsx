@@ -6,6 +6,9 @@ import { Form, Input, Button } from 'antd';
 
 const Container = styled.div`
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const InfoContent = styled.div`
@@ -35,19 +38,15 @@ const ContentHeader = styled.div`
   justify-content: center;
 `;
 
-const ContentForm = styled.form`
-  width: 35%;
+const ContentForm = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   margin: 0 auto;
 `;
 
 const SubmitButton = styled(Button)`
   width: 35%;
-`;
-
-const ContentButton = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
 `;
 
 const HaveAccount = styled.div`
@@ -56,6 +55,15 @@ const HaveAccount = styled.div`
 
 const ParaHaveAccount = styled.p`
   margin-left: 17rem;
+`;
+
+const FormContent = styled(Form)`
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  .ant-form-item-control {
+    max-width: 100%;
+  }
 `;
 
 const Signup = () => {
@@ -84,9 +92,10 @@ const Signup = () => {
         </ContentHeader>
       </InfoContent>
       <ContentForm>
-        <Form
+        <FormContent
           form={form}
           name='basic'
+          layout='vertical'
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
@@ -94,7 +103,7 @@ const Signup = () => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label='email'
+            label='Email'
             name='email'
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
@@ -130,13 +139,11 @@ const Signup = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <ContentButton>
-              <SubmitButton type='primary' onClick={() => form.submit()}>
-                Submit
-              </SubmitButton>
-            </ContentButton>
+            <SubmitButton type='primary' onClick={() => form.submit()}>
+              Submit
+            </SubmitButton>
           </Form.Item>
-        </Form>
+        </FormContent>
         <HaveAccount>
           <ParaHaveAccount>
             Have account? click <a href='/login'>here</a>

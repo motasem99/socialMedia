@@ -235,6 +235,12 @@ const CalendarOutlinedIcon = styled(CalendarOutlined)`
   margin-right: 1rem;
 `;
 
+const ContentEditUserPhoto = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 80%;
+`;
+
 const Home = () => {
   const [like, setLike] = useState(false);
   const [profileUser, setProfileUser] = useState(false);
@@ -310,9 +316,9 @@ const Home = () => {
               />
               <label htmlFor='userImage'>
                 <Avatar size={210} src={Logo} />
-                <div style={{ position: 'absolute', top: '30%', left: '80%' }}>
+                <ContentEditUserPhoto>
                   <EditOutlinedIcon />
-                </div>
+                </ContentEditUserPhoto>
               </label>
             </ContentAvatarProfile>
 
