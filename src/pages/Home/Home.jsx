@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
@@ -16,8 +16,8 @@ import {
   CalendarOutlined,
 } from '@ant-design/icons';
 
-import { useHistory } from 'react-router';
-import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, setUser } from '../../features/user/userSlice';
 
 const Container = styled.div`
   display: flex;
@@ -247,8 +247,8 @@ const ContentEditUserPhoto = styled.div`
 const Home = () => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
-  const [isToken, setIsToken] = useState(false);
-  const history = useHistory();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const handleDislike = () => {
     setLike(false);
@@ -263,17 +263,13 @@ const Home = () => {
     console.log(img);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-  };
-
   useEffect(() => {
     if (itemLocalStorage) {
-      setIsToken(true);
+      dispatch(setUser(itemLocalStorage));
     } else {
-      setIsToken(false);
+      dispatch(setUser(null));
     }
-  }, [itemLocalStorage]);
+  }, [dispatch, itemLocalStorage]);
 
   return (
     <Container>
@@ -307,7 +303,7 @@ const Home = () => {
         </CardPost>
       </SideContent>
 
-      {isToken ? (
+      {user ? (
         <SideProfile>
           <ContentProfile>
             <ContentAvatarProfile>
@@ -346,7 +342,12 @@ const Home = () => {
               Joined Jul 2021
             </ContentProfileStyle>
             <LogoutAndData>
-              <LogoutOutlinedIcon onClick={handleLogout} />
+              <LogoutOutlinedIcon
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  dispatch(setUser(null));
+                }}
+              />
               <EditOutlinedIcon />
             </LogoutAndData>
           </ContentProfile>

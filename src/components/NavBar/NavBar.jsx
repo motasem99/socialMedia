@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'antd';
 import { BellOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, setUser } from '../../features/user/userSlice';
 
 import styled from 'styled-components';
 
@@ -59,8 +62,9 @@ const SignupButton = styled(Button)`
 
 const NavBar = () => {
   let history = useHistory();
-  const [isToken, setIsToken] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     history.push('/');
@@ -69,15 +73,15 @@ const NavBar = () => {
 
   useEffect(() => {
     if (itemLocalStorage) {
-      setIsToken(true);
+      dispatch(setUser(itemLocalStorage));
     } else {
-      setIsToken(false);
+      dispatch(setUser(null));
     }
-  }, [itemLocalStorage]);
+  }, [dispatch, itemLocalStorage]);
 
   return (
     <Container>
-      {isToken ? (
+      {user ? (
         <ContainerUserExists>
           <PlusOutlinedIcon />
           <HomeOutlinedIcon onClick={handleClick} />
