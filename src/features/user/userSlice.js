@@ -7,14 +7,14 @@ export const counterSlice = createSlice({
     user: null,
   },
   reducers: {
-    setName: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setName } = counterSlice.actions;
+export const { setUser } = counterSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 
@@ -55,6 +55,7 @@ export const login =
           })
           .then((res) => {
             localStorage.setItem('token', res.data.token);
+            dispatch(setUser(res.data.token));
           })
           .catch((err) => {
             console.log(err?.response?.data?.error);
