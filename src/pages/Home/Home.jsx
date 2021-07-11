@@ -243,7 +243,7 @@ const ContentEditUserPhoto = styled.div`
 
 const Home = () => {
   const [like, setLike] = useState(false);
-  const [profileUser, setProfileUser] = useState(false);
+  const itemLocalStorage = localStorage.getItem('token');
 
   const handleDislike = () => {
     setLike(false);
@@ -290,19 +290,7 @@ const Home = () => {
         </CardPost>
       </SideContent>
 
-      {profileUser ? (
-        <SideLogin>
-          <ContentSideLogin>
-            <Para>No profile found, please login again</Para>
-            <ContentButtons>
-              <Button type='primary'>Login</Button>
-              <Button type='primary' danger>
-                Signup
-              </Button>
-            </ContentButtons>
-          </ContentSideLogin>
-        </SideLogin>
-      ) : (
+      {itemLocalStorage ? (
         <SideProfile>
           <ContentProfile>
             <ContentAvatarProfile>
@@ -346,6 +334,18 @@ const Home = () => {
             </LogoutAndData>
           </ContentProfile>
         </SideProfile>
+      ) : (
+        <SideLogin>
+          <ContentSideLogin>
+            <Para>No profile found, please login again</Para>
+            <ContentButtons>
+              <Button type='primary'>Login</Button>
+              <Button type='primary' danger>
+                Signup
+              </Button>
+            </ContentButtons>
+          </ContentSideLogin>
+        </SideLogin>
       )}
     </Container>
   );
