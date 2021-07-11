@@ -33,8 +33,8 @@ export const signup =
           localStorage.setItem('token', res.data.token);
         })
         .catch((err) => {
-          console.log(err?.response.data.error);
-          setError(err?.response.data.error);
+          console.log(err?.response?.data?.error);
+          setError(err?.response?.data?.error);
         });
       setSpinnerLoading(false);
     } catch (err) {

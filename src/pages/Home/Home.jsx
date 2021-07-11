@@ -16,6 +16,8 @@ import {
   CalendarOutlined,
 } from '@ant-design/icons';
 
+import { useHistory } from 'react-router';
+
 const Container = styled.div`
   display: flex;
 `;
@@ -244,6 +246,7 @@ const ContentEditUserPhoto = styled.div`
 const Home = () => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
+  const history = useHistory();
 
   const handleDislike = () => {
     setLike(false);
@@ -256,6 +259,10 @@ const Home = () => {
   const handleChange = (e) => {
     const img = e.target.files[0];
     console.log(img);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
   };
 
   return (
@@ -329,7 +336,7 @@ const Home = () => {
               Joined Jul 2021
             </ContentProfileStyle>
             <LogoutAndData>
-              <LogoutOutlinedIcon />
+              <LogoutOutlinedIcon onClick={handleLogout} />
               <EditOutlinedIcon />
             </LogoutAndData>
           </ContentProfile>

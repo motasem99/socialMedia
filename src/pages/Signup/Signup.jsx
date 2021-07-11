@@ -5,9 +5,11 @@ import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { Alert } from 'antd';
 
+import { useHistory } from 'react-router';
+
 // redux
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, signup } from '../../features/user/userSlice.js';
+import { useDispatch } from 'react-redux';
+import { signup } from '../../features/user/userSlice.js';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -77,7 +79,6 @@ const AlertError = styled(Alert)`
 
 const Signup = () => {
   const [form] = Form.useForm();
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
@@ -87,6 +88,7 @@ const Signup = () => {
   });
   const [error, setError] = useState();
   const [spinnerLoading, setSpinnerLoading] = useState(false);
+  const history = useHistory();
 
   const onFinish = (e) => {
     try {
@@ -95,6 +97,11 @@ const Signup = () => {
       console.log(err);
     }
   };
+
+  const token = localStorage.getItem('token');
+  if (token) {
+    history.push('/');
+  }
 
   const onFinishFailed = (e) => {
     console.log('Failed:', e);
