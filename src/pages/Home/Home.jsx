@@ -17,6 +17,7 @@ import {
 } from '@ant-design/icons';
 
 import { useHistory } from 'react-router';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -246,6 +247,7 @@ const ContentEditUserPhoto = styled.div`
 const Home = () => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
+  const [isToken, setIsToken] = useState(false);
   const history = useHistory();
 
   const handleDislike = () => {
@@ -264,6 +266,14 @@ const Home = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
   };
+
+  useEffect(() => {
+    if (itemLocalStorage) {
+      setIsToken(true);
+    } else {
+      setIsToken(false);
+    }
+  }, [itemLocalStorage]);
 
   return (
     <Container>
@@ -297,7 +307,7 @@ const Home = () => {
         </CardPost>
       </SideContent>
 
-      {itemLocalStorage ? (
+      {isToken ? (
         <SideProfile>
           <ContentProfile>
             <ContentAvatarProfile>

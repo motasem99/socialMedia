@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { BellOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
@@ -59,6 +59,7 @@ const SignupButton = styled(Button)`
 
 const NavBar = () => {
   let history = useHistory();
+  const [isToken, setIsToken] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
 
   const handleClick = () => {
@@ -66,9 +67,17 @@ const NavBar = () => {
     console.log('asdasdasd');
   };
 
+  useEffect(() => {
+    if (itemLocalStorage) {
+      setIsToken(true);
+    } else {
+      setIsToken(false);
+    }
+  }, [itemLocalStorage]);
+
   return (
     <Container>
-      {itemLocalStorage ? (
+      {isToken ? (
         <ContainerUserExists>
           <PlusOutlinedIcon />
           <HomeOutlinedIcon onClick={handleClick} />

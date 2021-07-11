@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import Logo from '../../image/logoSocialMedia.png';
+import { Alert } from 'antd';
+
+import { useHistory } from 'react-router';
+
+// redux
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/user/userSlice.js';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -63,22 +70,36 @@ const HaveAccount = styled.div`
   padding: 1rem;
 `;
 
+const AlertError = styled(Alert)`
+  width: 35%;
+  margin: 0 auto 1rem auto;
+`;
+
 const ParaHaveAccount = styled.p``;
 
 const Login = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const [error, setError] = useState();
+  const [spinnerLoading, setSpinnerLoading] = useState(false);
+  const history = useHistory();
+  const [dataForm, setDataForm] = useState({
+    email: '',
+    password: '',
+  });
 
   const onFinish = (e) => {
-    console.log('Success:', e);
-    e.email = '';
-    e.password = '';
-    e.confirmPassword = '';
-    e.userHandle = '';
+    dispatch(login(dataForm, setError, setSpinnerLoading));
   };
 
   const onFinishFailed = (e) => {
     console.log('Failed:', e);
   };
+
+  const token = localStorage.getItem('token');
+  if (token) {
+    history.push('/');
+  }
 
   return (
     <Container>
@@ -90,6 +111,9 @@ const Login = () => {
           <H2>Login</H2>
         </ContentHeader>
       </InfoContent>
+      {error && (
+        <AlertError message='Error' description={error} type='error' showIcon />
+      )}
       <ContentForm>
         <FormContent
           form={form}
@@ -104,6 +128,9 @@ const Login = () => {
           <Form.Item
             label='email'
             name='email'
+            onChange={(e) => {
+              setDataForm({ ...dataForm, email: e.target.value });
+            }}
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input />
@@ -112,13 +139,20 @@ const Login = () => {
           <Form.Item
             label='Password'
             name='password'
+            onChange={(e) => {
+              setDataForm({ ...dataForm, password: e.target.value });
+            }}
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <SubmitButton type='primary' onClick={() => form.submit()}>
+            <SubmitButton
+              loading={spinnerLoading}
+              type='primary'
+              onClick={() => form.submit()}
+            >
               Submit
             </SubmitButton>
           </Form.Item>

@@ -43,4 +43,31 @@ export const signup =
     }
   };
 
+export const login =
+  (data, setError, setSpinnerLoading) => async (dispatch, getState) => {
+    try {
+      try {
+        setSpinnerLoading(true);
+        await axios
+          .post(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/login`, {
+            email: data.email,
+            password: data.password,
+          })
+          .then((res) => {
+            localStorage.setItem('token', res.data.token);
+          })
+          .catch((err) => {
+            console.log(err?.response?.data?.error);
+            setError(err?.response?.data?.error);
+          });
+        setSpinnerLoading(false);
+      } catch (err) {
+        setSpinnerLoading(false);
+        throw err;
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
 export default counterSlice.reducer;
