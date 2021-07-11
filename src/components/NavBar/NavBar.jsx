@@ -68,7 +68,6 @@ const NavBar = () => {
 
   const handleClick = () => {
     history.push('/');
-    console.log('asdasdasd');
   };
 
   useEffect(() => {
