@@ -96,4 +96,39 @@ export const uploadUserPhoto =
     }
   };
 
+export const EditUserProfile =
+  (dataForm, setError, setConfirmLoading, setVisible, user) =>
+  async (dispatch, getState) => {
+    try {
+      setConfirmLoading(true);
+      axios
+        .patch(
+          `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`,
+          {
+            website: dataForm.website,
+            bio: dataForm.bio,
+            location: dataForm.location,
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + user,
+            },
+          }
+        )
+        .then((res) => {
+          setVisible(false);
+          console.log(res);
+        })
+        .catch((err) => {
+          setError(err?.response?.data?.error);
+        });
+      setConfirmLoading(false);
+      console.log(dataForm);
+      setConfirmLoading(false);
+    } catch (err) {
+      setConfirmLoading(false);
+      throw err;
+    }
+  };
+
 export default counterSlice.reducer;

@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Modal } from 'antd';
 
 import styled from 'styled-components';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 import { Alert } from 'antd';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { EditUserProfile, selectUser } from '../../features/user/userSlice.js';
 
 const ContentForm = styled.div`
   display: flex;
@@ -11,10 +15,6 @@ const ContentForm = styled.div`
   flex-direction: column;
   margin: 0 auto;
   width: 100%;
-`;
-
-const SubmitButton = styled(Button)`
-  width: 35%;
 `;
 
 const FormContent = styled(Form)`
@@ -40,14 +40,15 @@ const UserInfo = ({ visible, setVisible }) => {
   });
   const [error, setError] = useState();
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const onFinish = (e) => {
     try {
       form.submit();
-      //   setConfirmLoading(true);
-      //   setVisible(false);
-      //   setConfirmLoading(false);
-      console.log(e);
+      dispatch(
+        EditUserProfile(formData, setError, setConfirmLoading, setVisible, user)
+      );
     } catch (err) {
       console.log(err);
     }
