@@ -256,23 +256,9 @@ const Home = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const showModal = () => {
     setVisible(true);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setVisible(false);
   };
 
   const handleDislike = () => {
@@ -382,12 +368,7 @@ const Home = () => {
               <EditOutlinedIcon onClick={showModal} />
             </LogoutAndData>
           </ContentProfile>
-          <UserInfo
-            visible={visible}
-            confirmLoading={confirmLoading}
-            handleOk={handleOk}
-            handleCancel={handleCancel}
-          />
+          <UserInfo visible={visible} setVisible={setVisible} />
         </SideProfile>
       ) : (
         <SideLogin>

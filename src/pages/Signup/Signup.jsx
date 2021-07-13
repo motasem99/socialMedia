@@ -98,14 +98,14 @@ const Signup = () => {
     }
   };
 
+  const onFinishFailed = (e) => {
+    console.log('Failed:', e);
+  };
+
   const token = localStorage.getItem('token');
   if (token) {
     history.push('/');
   }
-
-  const onFinishFailed = (e) => {
-    console.log('Failed:', e);
-  };
 
   return (
     <Container>
