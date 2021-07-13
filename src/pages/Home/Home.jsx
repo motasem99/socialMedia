@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
 import Logo from '../../image/02.jpg';
+
 import {
   HeartTwoTone,
   HeartFilled,
@@ -22,6 +23,7 @@ import {
   setUser,
   uploadUserPhoto,
 } from '../../features/user/userSlice';
+import UserInfo from '../../components/UserInfo/UserInfo';
 
 const Container = styled.div`
   display: flex;
@@ -253,6 +255,25 @@ const Home = () => {
   const itemLocalStorage = localStorage.getItem('token');
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const [visible, setVisible] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false);
+  };
 
   const handleDislike = () => {
     setLike(false);
@@ -358,9 +379,15 @@ const Home = () => {
                   dispatch(setUser(null));
                 }}
               />
-              <EditOutlinedIcon />
+              <EditOutlinedIcon onClick={showModal} />
             </LogoutAndData>
           </ContentProfile>
+          <UserInfo
+            visible={visible}
+            confirmLoading={confirmLoading}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+          />
         </SideProfile>
       ) : (
         <SideLogin>
