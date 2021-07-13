@@ -73,8 +73,6 @@ export const login =
 
 export const uploadUserPhoto =
   (formData, user) => async (dispatch, getState) => {
-    console.log(formData);
-
     try {
       await axios
         .patch(
@@ -96,27 +94,6 @@ export const uploadUserPhoto =
     } catch (err) {
       throw err;
     }
-
-    // try {
-    //   await axios
-    //     .patch(
-    //       `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/uploadImage`,
-    //       formData,
-    //       {
-    //         headers: {
-    //           Authorization: `'Bearer '${user}`,
-    //         },
-    //       }
-    //     )
-    //     .then((res) => {
-    //       console.log(res);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err?.response?.data?.error);
-    //     });
-    // } catch (err) {
-    //   throw err;
-    // }
   };
 
 export default counterSlice.reducer;

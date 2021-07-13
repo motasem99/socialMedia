@@ -267,7 +267,7 @@ const Home = () => {
       const image = e.target.files[0];
       const formData = new FormData();
       formData.append('file', image);
-      dispatch(uploadUserPhoto({ formData, user }));
+      dispatch(uploadUserPhoto(formData, user));
     } catch (err) {
       console.log(err);
     }
