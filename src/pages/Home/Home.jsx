@@ -17,7 +17,11 @@ import {
 } from '@ant-design/icons';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, setUser } from '../../features/user/userSlice';
+import {
+  selectUser,
+  setUser,
+  uploadUserPhoto,
+} from '../../features/user/userSlice';
 
 const Container = styled.div`
   display: flex;
@@ -259,8 +263,14 @@ const Home = () => {
   };
 
   const handleChange = (e) => {
-    const img = e.target.files[0];
-    console.log(img);
+    try {
+      const image = e.target.files[0];
+      const formData = new FormData();
+      formData.append('file', image);
+      dispatch(uploadUserPhoto({ formData, user }));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
