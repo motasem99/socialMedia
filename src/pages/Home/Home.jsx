@@ -22,6 +22,7 @@ import {
   selectUser,
   setUser,
   uploadUserPhoto,
+  getUserProfile,
 } from '../../features/user/userSlice';
 import UserInfo from '../../components/UserInfo/UserInfo';
 
@@ -283,6 +284,7 @@ const Home = () => {
   useEffect(() => {
     if (itemLocalStorage) {
       dispatch(setUser(itemLocalStorage));
+      dispatch(getUserProfile(itemLocalStorage));
     } else {
       dispatch(setUser(null));
     }
