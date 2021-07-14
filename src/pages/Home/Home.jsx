@@ -77,7 +77,7 @@ const CardPost = styled.div`
 `;
 
 const ContentAvatar = styled.div`
-  width: 18%;
+  width: 23%;
 `;
 
 const ContentPost = styled.div`
@@ -304,10 +304,10 @@ const Home = () => {
   return (
     <Container>
       <SideContent>
-        {screams.map((item) => {
+        {screams?.map((item) => {
           return (
             <CardPost>
-              {screams.screams ? (
+              {!item ? (
                 <Skeleton active={activeLoading} />
               ) : (
                 <Fragment>
@@ -324,7 +324,7 @@ const Home = () => {
                     <ParaDate>
                       {moment(item?.createdAt).format('MMM YYYY')}
                     </ParaDate>
-                    <ParaPost>the description post</ParaPost>
+                    <ParaPost>{item.body}</ParaPost>
                     <ContentIcon>
                       <Icons>
                         {like ? (

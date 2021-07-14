@@ -8,7 +8,7 @@ export const ScreamsSlice = createSlice({
   },
   reducers: {
     setScreams: (state, action) => {
-      state.screams = action.payload;
+      state.screams = [...action.payload];
     },
   },
 });
@@ -51,9 +51,8 @@ export const addScreams =
           }
         )
         .then((res) => {
-          dispatch(setScreams(res.data));
+          dispatch(getScreams());
           setVisible(false);
-          console.log(res);
         })
         .catch((err) => {
           setError(err?.response?.data?.error);

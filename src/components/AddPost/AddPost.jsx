@@ -45,10 +45,6 @@ const AddPost = ({ visible, setVisible }) => {
   const onFinish = (e) => {
     try {
       form.submit();
-      //   dispatch(
-      //     // EditUserProfile(formData, setError, setConfirmLoading, setVisible, user)
-      //   );
-
       dispatch(
         addScreams(formData, user, setError, setConfirmLoading, setVisible)
       );
