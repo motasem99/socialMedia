@@ -263,8 +263,6 @@ const Home = () => {
   const [visible, setVisible] = React.useState(false);
   const [activeLoading, setActiveLoading] = useState(true);
 
-  console.log(credentials);
-
   const showModal = () => {
     setVisible(true);
   };
@@ -291,7 +289,9 @@ const Home = () => {
   useEffect(() => {
     if (itemLocalStorage) {
       dispatch(setUser(itemLocalStorage));
-      dispatch(getUserProfile(itemLocalStorage, setActiveLoading));
+      setActiveLoading(true);
+      dispatch(getUserProfile(itemLocalStorage));
+      setActiveLoading(false);
     } else {
       dispatch(setUser(null));
     }
@@ -392,7 +392,11 @@ const Home = () => {
             )}
           </ContentProfile>
 
-          <UserInfo visible={visible} setVisible={setVisible} />
+          <UserInfo
+            visible={visible}
+            setVisible={setVisible}
+            data={credentials}
+          />
         </SideProfile>
       ) : (
         <SideLogin>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 
 import styled from 'styled-components';
@@ -27,11 +27,11 @@ const FormContent = styled(Form)`
 `;
 
 const AlertError = styled(Alert)`
-  width: 35%;
+  width: 100%;
   margin: 0 auto 1rem auto;
 `;
 
-const UserInfo = ({ visible, setVisible }) => {
+const UserInfo = ({ visible, setVisible, data }) => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     bio: '',
@@ -53,6 +53,16 @@ const UserInfo = ({ visible, setVisible }) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        bio: data.bio ? data.bio : '',
+        website: data.website ? data.website : '',
+        location: data.location ? data.location : '',
+      });
+    }
+  }, [data]);
 
   const onFinishFailed = (e) => {
     console.log('Failed:', e);
@@ -88,6 +98,7 @@ const UserInfo = ({ visible, setVisible }) => {
             <Form.Item
               label='Bio'
               name='bio'
+              initialValue={data?.bio}
               onChange={(e) => {
                 setFormData({ ...formData, bio: e.target.value });
               }}
@@ -99,6 +110,7 @@ const UserInfo = ({ visible, setVisible }) => {
             <Form.Item
               label='Website'
               name='website'
+              initialValue={data?.website}
               onChange={(e) => {
                 setFormData({ ...formData, website: e.target.value });
               }}
@@ -112,6 +124,8 @@ const UserInfo = ({ visible, setVisible }) => {
             <Form.Item
               label='Location'
               name='location'
+              initialValue={data?.location}
+              value='asdasd'
               onChange={(e) => {
                 setFormData({ ...formData, location: e.target.value });
               }}

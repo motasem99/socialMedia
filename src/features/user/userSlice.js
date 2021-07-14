@@ -106,13 +106,13 @@ export const EditUserProfile =
   async (dispatch, getState) => {
     try {
       setConfirmLoading(true);
-      axios
+      await axios
         .patch(
           `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`,
           {
-            website: dataForm.website,
-            bio: dataForm.bio,
-            location: dataForm.location,
+            website: dataForm.website || '',
+            bio: dataForm.bio || '',
+            location: dataForm.location || '',
           },
           {
             headers: {
@@ -121,6 +121,7 @@ export const EditUserProfile =
           }
         )
         .then((res) => {
+          dispatch(getUserProfile(user));
           setVisible(false);
           console.log(res);
         })
@@ -136,28 +137,23 @@ export const EditUserProfile =
     }
   };
 
-export const getUserProfile =
-  (user, setActiveLoading) => async (dispatch, getState) => {
-    try {
-      setActiveLoading(true);
-      axios
-        .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`, {
-          headers: {
-            Authorization: 'Bearer ' + user,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          dispatch(setUserData(res.data.credentials));
-        })
-        .catch((err) => {
-          console.log(err?.response?.data?.error);
-        });
-      setActiveLoading(false);
-    } catch (err) {
-      setActiveLoading(false);
-      throw err;
-    }
-  };
+export const getUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    await axios
+      .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`, {
+        headers: {
+          Authorization: 'Bearer ' + user,
+        },
+      })
+      .then((res) => {
+        dispatch(setUserData(res.data.credentials));
+      })
+      .catch((err) => {
+        console.log(err?.response?.data?.error);
+      });
+  } catch (err) {
+    throw err;
+  }
+};
 
 export default counterSlice.reducer;
