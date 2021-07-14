@@ -6,6 +6,7 @@ export const counterSlice = createSlice({
   initialState: {
     user: null,
     credentials: null,
+    userDataPage: {},
   },
   reducers: {
     setUser: (state, action) => {
@@ -14,14 +15,18 @@ export const counterSlice = createSlice({
     setUserData: (state, action) => {
       state.credentials = action.payload;
     },
+    setUserDataPage: (state, action) => {
+      state.userDataPage = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setUserData } = counterSlice.actions;
+export const { setUser, setUserData, setUserDataPage } = counterSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 export const selectUserData = (state) => state.user.credentials;
+export const selectUserDataPage = (state) => state.user.userDataPage;
 
 export const signup =
   (data, setError, setSpinnerLoading) => async (dispatch, getState) => {
@@ -158,7 +163,18 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
 };
 
 export const getUserPage = (handle) => async (dispatch, getState) => {
-  console.log(handle);
+  try {
+    await axios
+      .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/${handle}`)
+      .then((res) => {
+        dispatch(setUserDataPage(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (err) {
+    throw err;
+  }
 };
 
 export default counterSlice.reducer;

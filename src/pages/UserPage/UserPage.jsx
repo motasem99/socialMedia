@@ -16,7 +16,10 @@ import {
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserPage, setUser } from '../../features/user/userSlice.js';
+import {
+  getUserPage,
+  selectUserDataPage,
+} from '../../features/user/userSlice.js';
 
 const SideContent = styled.div`
   width: 65%;
@@ -188,6 +191,9 @@ const CalendarOutlinedIcon = styled(CalendarOutlined)`
 const UserPage = () => {
   const dispatch = useDispatch();
   const [like, setLike] = useState(false);
+  const dataUserPage = useSelector(selectUserDataPage);
+
+  console.log(dataUserPage);
 
   useEffect(() => {
     const parsed = qs.parse(window.location.search);
