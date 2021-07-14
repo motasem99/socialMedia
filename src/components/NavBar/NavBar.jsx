@@ -8,6 +8,8 @@ import { selectUser, setUser } from '../../features/user/userSlice';
 
 import styled from 'styled-components';
 
+import AddPost from '../../components/AddPost/AddPost';
+
 const Container = styled.div`
   width: 100%;
   height: 70px;
@@ -65,6 +67,11 @@ const NavBar = () => {
   const itemLocalStorage = localStorage.getItem('token');
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => {
+    setVisible(true);
+  };
 
   const handleClick = () => {
     history.push('/');
@@ -82,9 +89,11 @@ const NavBar = () => {
     <Container>
       {user ? (
         <ContainerUserExists>
-          <PlusOutlinedIcon />
+          <PlusOutlinedIcon onClick={showModal} />
           <HomeOutlinedIcon onClick={handleClick} />
           <BellOutlinedIcon />
+
+          <AddPost visible={visible} setVisible={setVisible} />
         </ContainerUserExists>
       ) : (
         <ContainerUserExists>

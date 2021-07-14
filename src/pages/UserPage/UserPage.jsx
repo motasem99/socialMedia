@@ -223,54 +223,52 @@ const UserPage = () => {
               </div>
             ) : (
               <SideContent>
-                <CardPost>
-                  {dataUserPage.screams?.map((item) => {
-                    return (
-                      <Fragment>
-                        <ContentAvatar>
-                          <Avatar
-                            shape='square'
-                            size={190}
-                            src={item.userImage}
-                          />
-                        </ContentAvatar>
-                        <ContentPost>
-                          <ContentNameDelete>
-                            <NameLink href={`/userPage/?handle=`}>
-                              {item.userHandle}
-                            </NameLink>
-                            <DeleteOutlinedIcon />
-                          </ContentNameDelete>
-                          <ParaDate>
-                            {moment(item.createdAt).format('MMM YYYY')}
-                          </ParaDate>
-                          <ParaPost>{item.body}</ParaPost>
-                          <ContentIcon>
-                            <Icons>
-                              {like ? (
-                                <HeartFilledIcon onClick={handleDislike} />
-                              ) : (
-                                <HeartTwoToneIcon onClick={handleLike} />
-                              )}
-                              <LikeAndComment>
-                                {' '}
-                                {item.likeCount} Like
-                              </LikeAndComment>{' '}
-                              <CommentOutlinedIcon />{' '}
-                              <LikeAndComment>
-                                {' '}
-                                {item.commentCount} comments
-                              </LikeAndComment>
-                            </Icons>
-                            <div>
-                              <ExpandAltOutlinedIcon />
-                            </div>
-                          </ContentIcon>
-                        </ContentPost>
-                      </Fragment>
-                    );
-                  })}
-                </CardPost>
+                {dataUserPage.screams?.map((item) => {
+                  return (
+                    <CardPost>
+                      <ContentAvatar>
+                        <Avatar
+                          shape='square'
+                          size={190}
+                          src={item.userImage}
+                        />
+                      </ContentAvatar>
+                      <ContentPost>
+                        <ContentNameDelete>
+                          <NameLink href={`/userPage/?handle=`}>
+                            {item.userHandle}
+                          </NameLink>
+                          <DeleteOutlinedIcon />
+                        </ContentNameDelete>
+                        <ParaDate>
+                          {moment(item.createdAt).format('MMM YYYY')}
+                        </ParaDate>
+                        <ParaPost>{item.body}</ParaPost>
+                        <ContentIcon>
+                          <Icons>
+                            {like ? (
+                              <HeartFilledIcon onClick={handleDislike} />
+                            ) : (
+                              <HeartTwoToneIcon onClick={handleLike} />
+                            )}
+                            <LikeAndComment>
+                              {' '}
+                              {item.likeCount} Like
+                            </LikeAndComment>{' '}
+                            <CommentOutlinedIcon />{' '}
+                            <LikeAndComment>
+                              {' '}
+                              {item.commentCount} comments
+                            </LikeAndComment>
+                          </Icons>
+                          <div>
+                            <ExpandAltOutlinedIcon />
+                          </div>
+                        </ContentIcon>
+                      </ContentPost>
+                    </CardPost>
+                  );
+                })}
               </SideContent>
             )}
           </Fragment>

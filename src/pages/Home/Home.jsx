@@ -26,6 +26,9 @@ import {
   getUserProfile,
   selectUserData,
 } from '../../features/user/userSlice';
+
+import { getScreams, selectScreams } from '../../features/Scream/scream.js';
+
 import UserInfo from '../../components/UserInfo/UserInfo';
 
 const Container = styled.div`
@@ -257,6 +260,7 @@ const Home = () => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const user = useSelector(selectUser);
+  const screams = useSelector(selectScreams);
   const credentials = useSelector(selectUserData);
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
@@ -290,6 +294,7 @@ const Home = () => {
       dispatch(setUser(itemLocalStorage));
       setActiveLoading(true);
       dispatch(getUserProfile(itemLocalStorage));
+      dispatch(getScreams());
       setActiveLoading(false);
     } else {
       dispatch(setUser(null));
