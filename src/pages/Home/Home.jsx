@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
 import Logo from '../../image/02.jpg';
+import { Skeleton } from 'antd';
 
 import {
   HeartTwoTone,
@@ -257,6 +258,7 @@ const Home = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
+  const [activeLoading, setActiveLoading] = useState(true);
 
   const showModal = () => {
     setVisible(true);
@@ -284,7 +286,7 @@ const Home = () => {
   useEffect(() => {
     if (itemLocalStorage) {
       dispatch(setUser(itemLocalStorage));
-      dispatch(getUserProfile(itemLocalStorage));
+      dispatch(getUserProfile(itemLocalStorage, setActiveLoading));
     } else {
       dispatch(setUser(null));
     }
@@ -294,82 +296,96 @@ const Home = () => {
     <Container>
       <SideContent>
         <CardPost>
-          <ContentAvatar>
-            <Avatar shape='square' size={190} src={Logo} />
-          </ContentAvatar>
-          <ContentPost>
-            <ContentNameDelete>
-              <NameLink href='#'>name</NameLink>
-              <DeleteOutlinedIcon />
-            </ContentNameDelete>
-            <ParaDate>The date</ParaDate>
-            <ParaPost>the description post</ParaPost>
-            <ContentIcon>
-              <Icons>
-                {like ? (
-                  <HeartFilledIcon onClick={handleDislike} />
-                ) : (
-                  <HeartTwoToneIcon onClick={handleLike} />
-                )}
-                <LikeAndComment> 5 Like</LikeAndComment> <CommentOutlinedIcon />{' '}
-                <LikeAndComment> 8 comments</LikeAndComment>
-              </Icons>
-              <div>
-                <ExpandAltOutlinedIcon />
-              </div>
-            </ContentIcon>
-          </ContentPost>
+          {activeLoading ? (
+            <Skeleton active={activeLoading} />
+          ) : (
+            <Fragment>
+              <ContentAvatar>
+                <Avatar shape='square' size={190} src={Logo} />
+              </ContentAvatar>
+              <ContentPost>
+                <ContentNameDelete>
+                  <NameLink href='#'>name</NameLink>
+                  <DeleteOutlinedIcon />
+                </ContentNameDelete>
+                <ParaDate>The date</ParaDate>
+                <ParaPost>the description post</ParaPost>
+                <ContentIcon>
+                  <Icons>
+                    {like ? (
+                      <HeartFilledIcon onClick={handleDislike} />
+                    ) : (
+                      <HeartTwoToneIcon onClick={handleLike} />
+                    )}
+                    <LikeAndComment> 5 Like</LikeAndComment>{' '}
+                    <CommentOutlinedIcon />{' '}
+                    <LikeAndComment> 8 comments</LikeAndComment>
+                  </Icons>
+                  <div>
+                    <ExpandAltOutlinedIcon />
+                  </div>
+                </ContentIcon>
+              </ContentPost>
+            </Fragment>
+          )}
         </CardPost>
       </SideContent>
 
       {user ? (
         <SideProfile>
           <ContentProfile>
-            <ContentAvatarProfile>
-              <input
-                type='file'
-                accept='image/*'
-                name='userImage'
-                id='userImage'
-                style={{ display: 'none' }}
-                onChange={handleChange}
-              />
-              <label htmlFor='userImage'>
-                <Avatar size={210} src={Logo} />
-                <ContentEditUserPhoto>
-                  <EditOutlinedIcon />
-                </ContentEditUserPhoto>
-              </label>
-            </ContentAvatarProfile>
+            {activeLoading ? (
+              <Skeleton active={activeLoading} />
+            ) : (
+              <Fragment>
+                <ContentAvatarProfile>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    name='userImage'
+                    id='userImage'
+                    style={{ display: 'none' }}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor='userImage'>
+                    <Avatar size={210} src={Logo} />
+                    <ContentEditUserPhoto>
+                      <EditOutlinedIcon />
+                    </ContentEditUserPhoto>
+                  </label>
+                </ContentAvatarProfile>
 
-            <ContentUserName>
-              <LinkUserName href='#'>@test</LinkUserName>
-            </ContentUserName>
-            <Profile>
-              <ContentProfileStyle>User Name</ContentProfileStyle>
-              <ContentProfileStyle>
-                <EnvironmentOutlinedIcon /> palestine Gaza
-              </ContentProfileStyle>
-              <ContentProfileStyle>
-                <UserSite href='gazacontents.com' target='_blank'>
-                  <AliyunOutlinedIcon /> gazacontents.com
-                </UserSite>
-              </ContentProfileStyle>
-            </Profile>
-            <ContentProfileStyle>
-              <CalendarOutlinedIcon />
-              Joined Jul 2021
-            </ContentProfileStyle>
-            <LogoutAndData>
-              <LogoutOutlinedIcon
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  dispatch(setUser(null));
-                }}
-              />
-              <EditOutlinedIcon onClick={showModal} />
-            </LogoutAndData>
+                <ContentUserName>
+                  <LinkUserName href='#'>@test</LinkUserName>
+                </ContentUserName>
+                <Profile>
+                  <ContentProfileStyle>User Name</ContentProfileStyle>
+                  <ContentProfileStyle>
+                    <EnvironmentOutlinedIcon /> palestine Gaza
+                  </ContentProfileStyle>
+                  <ContentProfileStyle>
+                    <UserSite href='gazacontents.com' target='_blank'>
+                      <AliyunOutlinedIcon /> gazacontents.com
+                    </UserSite>
+                  </ContentProfileStyle>
+                </Profile>
+                <ContentProfileStyle>
+                  <CalendarOutlinedIcon />
+                  Joined Jul 2021
+                </ContentProfileStyle>
+                <LogoutAndData>
+                  <LogoutOutlinedIcon
+                    onClick={() => {
+                      localStorage.removeItem('token');
+                      dispatch(setUser(null));
+                    }}
+                  />
+                  <EditOutlinedIcon onClick={showModal} />
+                </LogoutAndData>
+              </Fragment>
+            )}
           </ContentProfile>
+
           <UserInfo visible={visible} setVisible={setVisible} />
         </SideProfile>
       ) : (

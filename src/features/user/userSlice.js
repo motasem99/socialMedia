@@ -136,27 +136,28 @@ export const EditUserProfile =
     }
   };
 
-export const getUserProfile = (user) => async (dispatch, getState) => {
-  try {
-    console.log(user);
-    axios
-      .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`, {
-        headers: {
-          Authorization: 'Bearer ' + user,
-        },
-      })
-      .then((res) => {
-        const currentData = selectUserData(getState());
-        console.log(currentData);
-        console.log(res);
-        dispatch(setUserData(res.data.credentials));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } catch (err) {
-    throw err;
-  }
-};
+export const getUserProfile =
+  (user, setActiveLoading) => async (dispatch, getState) => {
+    try {
+      setActiveLoading(true);
+      axios
+        .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/users/me`, {
+          headers: {
+            Authorization: 'Bearer ' + user,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(setUserData(res.data.credentials));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setActiveLoading(false);
+    } catch (err) {
+      setActiveLoading(false);
+      throw err;
+    }
+  };
 
 export default counterSlice.reducer;
