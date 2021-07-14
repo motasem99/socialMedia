@@ -62,4 +62,28 @@ export const addScreams =
     }
   };
 
+export const deletePost = (postId, user) => async (dispatch, getState) => {
+  console.log(postId);
+  try {
+    await axios
+      .delete(
+        `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${postId}`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + user,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(getScreams());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (err) {
+    throw err;
+  }
+};
+
 export default ScreamsSlice.reducer;

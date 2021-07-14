@@ -27,7 +27,11 @@ import {
   selectUserData,
 } from '../../features/user/userSlice';
 
-import { getScreams, selectScreams } from '../../features/Scream/scream.js';
+import {
+  getScreams,
+  selectScreams,
+  deletePost,
+} from '../../features/Scream/scream.js';
 
 import UserInfo from '../../components/UserInfo/UserInfo';
 
@@ -290,12 +294,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setActiveLoading(true);
+    dispatch(getScreams());
+    setActiveLoading(false);
     if (itemLocalStorage) {
-      dispatch(setUser(itemLocalStorage));
-      setActiveLoading(true);
       dispatch(getUserProfile(itemLocalStorage));
-      dispatch(getScreams());
-      setActiveLoading(false);
+      dispatch(setUser(itemLocalStorage));
     } else {
       dispatch(setUser(null));
     }
@@ -319,7 +323,15 @@ const Home = () => {
                       <NameLink href={`/userPage/?handle=${item.userHandle}`}>
                         {item.userHandle}
                       </NameLink>
-                      <DeleteOutlinedIcon />
+                      {credentials?.handle === item.userHandle ? (
+                        <DeleteOutlinedIcon
+                          onClick={() =>
+                            dispatch(deletePost(item.screamId, user))
+                          }
+                        />
+                      ) : (
+                        ''
+                      )}
                     </ContentNameDelete>
                     <ParaDate>
                       {moment(item?.createdAt).format('MMM YYYY')}
