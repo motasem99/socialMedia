@@ -309,7 +309,9 @@ const Home = () => {
               </ContentAvatar>
               <ContentPost>
                 <ContentNameDelete>
-                  <NameLink href='#'>name</NameLink>
+                  <NameLink href={`/userPage/?handle=${credentials.handle}`}>
+                    name
+                  </NameLink>
                   <DeleteOutlinedIcon />
                 </ContentNameDelete>
                 <ParaDate>The date</ParaDate>

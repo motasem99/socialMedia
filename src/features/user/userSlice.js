@@ -157,4 +157,8 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
   }
 };
 
+export const getUserPage = (handle) => async (dispatch, getState) => {
+  console.log(handle);
+};
+
 export default counterSlice.reducer;
