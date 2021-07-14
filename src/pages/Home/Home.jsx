@@ -24,6 +24,7 @@ import {
   setUser,
   uploadUserPhoto,
   getUserProfile,
+  selectUserData,
 } from '../../features/user/userSlice';
 import UserInfo from '../../components/UserInfo/UserInfo';
 
@@ -256,9 +257,12 @@ const Home = () => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const user = useSelector(selectUser);
+  const credentials = useSelector(selectUserData);
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
   const [activeLoading, setActiveLoading] = useState(true);
+
+  console.log(credentials);
 
   const showModal = () => {
     setVisible(true);
@@ -296,7 +300,7 @@ const Home = () => {
     <Container>
       <SideContent>
         <CardPost>
-          {activeLoading ? (
+          {!credentials ? (
             <Skeleton active={activeLoading} />
           ) : (
             <Fragment>
@@ -334,7 +338,7 @@ const Home = () => {
       {user ? (
         <SideProfile>
           <ContentProfile>
-            {activeLoading ? (
+            {!credentials ? (
               <Skeleton active={activeLoading} />
             ) : (
               <Fragment>
@@ -356,16 +360,16 @@ const Home = () => {
                 </ContentAvatarProfile>
 
                 <ContentUserName>
-                  <LinkUserName href='#'>@test</LinkUserName>
+                  <LinkUserName href='#'>@{credentials.handle}</LinkUserName>
                 </ContentUserName>
                 <Profile>
-                  <ContentProfileStyle>User Name</ContentProfileStyle>
+                  <ContentProfileStyle>{credentials.bio}</ContentProfileStyle>
                   <ContentProfileStyle>
-                    <EnvironmentOutlinedIcon /> palestine Gaza
+                    <EnvironmentOutlinedIcon /> {credentials.location}
                   </ContentProfileStyle>
                   <ContentProfileStyle>
                     <UserSite href='gazacontents.com' target='_blank'>
-                      <AliyunOutlinedIcon /> gazacontents.com
+                      <AliyunOutlinedIcon /> {credentials.website}
                     </UserSite>
                   </ContentProfileStyle>
                 </Profile>
