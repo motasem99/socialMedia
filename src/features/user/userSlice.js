@@ -151,7 +151,7 @@ export const getUserProfile =
           dispatch(setUserData(res.data.credentials));
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err?.response?.data?.error);
         });
       setActiveLoading(false);
     } catch (err) {

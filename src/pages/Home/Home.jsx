@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { Avatar } from 'antd';
 import Logo from '../../image/02.jpg';
 import { Skeleton } from 'antd';
+import moment from 'moment';
 
 import {
   HeartTwoTone,
@@ -360,22 +361,23 @@ const Home = () => {
                 </ContentAvatarProfile>
 
                 <ContentUserName>
-                  <LinkUserName href='#'>@{credentials.handle}</LinkUserName>
+                  <LinkUserName href='#'>@{credentials?.handle}</LinkUserName>
                 </ContentUserName>
                 <Profile>
-                  <ContentProfileStyle>{credentials.bio}</ContentProfileStyle>
+                  <ContentProfileStyle>{credentials?.bio}</ContentProfileStyle>
                   <ContentProfileStyle>
                     <EnvironmentOutlinedIcon /> {credentials.location}
                   </ContentProfileStyle>
                   <ContentProfileStyle>
-                    <UserSite href='gazacontents.com' target='_blank'>
-                      <AliyunOutlinedIcon /> {credentials.website}
+                    <UserSite href={credentials?.website} target='_blank'>
+                      <AliyunOutlinedIcon /> {credentials?.website}
                     </UserSite>
                   </ContentProfileStyle>
                 </Profile>
                 <ContentProfileStyle>
                   <CalendarOutlinedIcon />
-                  Joined Jul 2021
+                  {credentials &&
+                    moment(credentials?.createdAt).format('MMM YYYY')}
                 </ContentProfileStyle>
                 <LogoutAndData>
                   <LogoutOutlinedIcon
