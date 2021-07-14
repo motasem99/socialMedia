@@ -92,6 +92,7 @@ export const uploadUserPhoto =
         )
         .then((res) => {
           console.log(res);
+          dispatch(getUserProfile(user));
         })
         .catch((err) => {
           console.log(err?.response?.data?.error);

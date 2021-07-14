@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { Avatar } from 'antd';
-import Logo from '../../image/02.jpg';
 import { Skeleton } from 'antd';
 import moment from 'moment';
 
@@ -306,7 +305,7 @@ const Home = () => {
           ) : (
             <Fragment>
               <ContentAvatar>
-                <Avatar shape='square' size={190} src={Logo} />
+                <Avatar shape='square' size={190} src={credentials.imageUrl} />
               </ContentAvatar>
               <ContentPost>
                 <ContentNameDelete>
@@ -353,7 +352,7 @@ const Home = () => {
                     onChange={handleChange}
                   />
                   <label htmlFor='userImage'>
-                    <Avatar size={210} src={Logo} />
+                    <Avatar size={210} src={credentials.imageUrl} />
                     <ContentEditUserPhoto>
                       <EditOutlinedIcon />
                     </ContentEditUserPhoto>
