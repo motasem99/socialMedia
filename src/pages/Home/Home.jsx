@@ -77,7 +77,7 @@ const CardPost = styled.div`
 `;
 
 const ContentAvatar = styled.div`
-  width: 23%;
+  width: 18%;
 `;
 
 const ContentPost = styled.div`
@@ -266,8 +266,6 @@ const Home = () => {
   const [visible, setVisible] = React.useState(false);
   const [activeLoading, setActiveLoading] = useState(true);
 
-  console.log(screams);
-
   const showModal = () => {
     setVisible(true);
   };
@@ -318,8 +316,8 @@ const Home = () => {
                   </ContentAvatar>
                   <ContentPost>
                     <ContentNameDelete>
-                      <NameLink href={`/userPage/?handle=${item.handle}`}>
-                        name
+                      <NameLink href={`/userPage/?handle=${item.userHandle}`}>
+                        {item.userHandle}
                       </NameLink>
                       <DeleteOutlinedIcon />
                     </ContentNameDelete>
