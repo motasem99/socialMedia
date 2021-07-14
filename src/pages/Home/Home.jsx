@@ -266,6 +266,8 @@ const Home = () => {
   const [visible, setVisible] = React.useState(false);
   const [activeLoading, setActiveLoading] = useState(true);
 
+  console.log(screams);
+
   const showModal = () => {
     setVisible(true);
   };
@@ -304,42 +306,51 @@ const Home = () => {
   return (
     <Container>
       <SideContent>
-        <CardPost>
-          {!credentials ? (
-            <Skeleton active={activeLoading} />
-          ) : (
-            <Fragment>
-              <ContentAvatar>
-                <Avatar shape='square' size={190} src={credentials.imageUrl} />
-              </ContentAvatar>
-              <ContentPost>
-                <ContentNameDelete>
-                  <NameLink href={`/userPage/?handle=${credentials.handle}`}>
-                    name
-                  </NameLink>
-                  <DeleteOutlinedIcon />
-                </ContentNameDelete>
-                <ParaDate>The date</ParaDate>
-                <ParaPost>the description post</ParaPost>
-                <ContentIcon>
-                  <Icons>
-                    {like ? (
-                      <HeartFilledIcon onClick={handleDislike} />
-                    ) : (
-                      <HeartTwoToneIcon onClick={handleLike} />
-                    )}
-                    <LikeAndComment> 5 Like</LikeAndComment>{' '}
-                    <CommentOutlinedIcon />{' '}
-                    <LikeAndComment> 8 comments</LikeAndComment>
-                  </Icons>
-                  <div>
-                    <ExpandAltOutlinedIcon />
-                  </div>
-                </ContentIcon>
-              </ContentPost>
-            </Fragment>
-          )}
-        </CardPost>
+        {screams.map((item) => {
+          return (
+            <CardPost>
+              {screams.screams ? (
+                <Skeleton active={activeLoading} />
+              ) : (
+                <Fragment>
+                  <ContentAvatar>
+                    <Avatar shape='square' size={190} src={item.userImage} />
+                  </ContentAvatar>
+                  <ContentPost>
+                    <ContentNameDelete>
+                      <NameLink href={`/userPage/?handle=${item.handle}`}>
+                        name
+                      </NameLink>
+                      <DeleteOutlinedIcon />
+                    </ContentNameDelete>
+                    <ParaDate>
+                      {moment(item?.createdAt).format('MMM YYYY')}
+                    </ParaDate>
+                    <ParaPost>the description post</ParaPost>
+                    <ContentIcon>
+                      <Icons>
+                        {like ? (
+                          <HeartFilledIcon onClick={handleDislike} />
+                        ) : (
+                          <HeartTwoToneIcon onClick={handleLike} />
+                        )}
+                        <LikeAndComment> {item.likeCount} Like</LikeAndComment>{' '}
+                        <CommentOutlinedIcon />{' '}
+                        <LikeAndComment>
+                          {' '}
+                          {item.commentCount} comments
+                        </LikeAndComment>
+                      </Icons>
+                      <div>
+                        <ExpandAltOutlinedIcon />
+                      </div>
+                    </ContentIcon>
+                  </ContentPost>
+                </Fragment>
+              )}
+            </CardPost>
+          );
+        })}
       </SideContent>
 
       {user ? (

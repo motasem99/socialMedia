@@ -23,7 +23,6 @@ export const getScreams = () => async (dispatch, getState) => {
     await axios
       .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams`)
       .then((res) => {
-        console.log(res);
         dispatch(setScreams(res.data));
       })
       .catch((err) => {
