@@ -2,6 +2,8 @@ import React, { useEffect, Fragment, useState } from 'react';
 import * as qs from 'query-string';
 import styled from 'styled-components';
 import { Avatar } from 'antd';
+import moment from 'moment';
+import { Skeleton } from 'antd';
 
 import {
   HeartTwoTone,
@@ -146,7 +148,8 @@ const ContentUserName = styled.div`
 
 const LinkUserName = styled.a`
   font-size: 2.2rem;
-`;
+  cursor: default;
+}`;
 
 const Profile = styled.div`
   text-align: center;
@@ -192,12 +195,13 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const [like, setLike] = useState(false);
   const dataUserPage = useSelector(selectUserDataPage);
-
-  console.log(dataUserPage);
+  const [activeLoading, setActiveLoading] = useState(true);
 
   useEffect(() => {
+    setActiveLoading(true);
     const parsed = qs.parse(window.location.search);
     dispatch(getUserPage(parsed.handle));
+    setActiveLoading(false);
   }, []);
 
   const handleDislike = () => {
@@ -211,73 +215,111 @@ const UserPage = () => {
   return (
     <Fragment>
       <div style={{ display: 'flex' }}>
-        <SideContent>
-          <CardPost>
-            <Fragment>
-              <ContentAvatar>
-                <Avatar shape='square' size={190} />
-              </ContentAvatar>
-              <ContentPost>
-                <ContentNameDelete>
-                  <NameLink href={`/userPage/?handle=`}>name</NameLink>
-                  <DeleteOutlinedIcon />
-                </ContentNameDelete>
-                <ParaDate>The date</ParaDate>
-                <ParaPost>the description post</ParaPost>
-                <ContentIcon>
-                  <Icons>
-                    {like ? (
-                      <HeartFilledIcon onClick={handleDislike} />
-                    ) : (
-                      <HeartTwoToneIcon onClick={handleLike} />
-                    )}
-                    <LikeAndComment> 5 Like</LikeAndComment>{' '}
-                    <CommentOutlinedIcon />{' '}
-                    <LikeAndComment> 8 comments</LikeAndComment>
-                  </Icons>
-                  <div>
-                    <ExpandAltOutlinedIcon />
-                  </div>
-                </ContentIcon>
-              </ContentPost>
-            </Fragment>
-          </CardPost>
-        </SideContent>
+        {dataUserPage.screams ? (
+          <Fragment>
+            {dataUserPage.screams.length === 0 ? (
+              <div style={{ width: '65%' }}>
+                <h1>No Post Here</h1>
+              </div>
+            ) : (
+              <SideContent>
+                <CardPost>
+                  {dataUserPage.screams?.map((item) => {
+                    return (
+                      <Fragment>
+                        <ContentAvatar>
+                          <Avatar
+                            shape='square'
+                            size={190}
+                            src={item.userImage}
+                          />
+                        </ContentAvatar>
+                        <ContentPost>
+                          <ContentNameDelete>
+                            <NameLink href={`/userPage/?handle=`}>
+                              {item.userHandle}
+                            </NameLink>
+                            <DeleteOutlinedIcon />
+                          </ContentNameDelete>
+                          <ParaDate>
+                            {moment(item.createdAt).format('MMM YYYY')}
+                          </ParaDate>
+                          <ParaPost>{item.body}</ParaPost>
+                          <ContentIcon>
+                            <Icons>
+                              {like ? (
+                                <HeartFilledIcon onClick={handleDislike} />
+                              ) : (
+                                <HeartTwoToneIcon onClick={handleLike} />
+                              )}
+                              <LikeAndComment>
+                                {' '}
+                                {item.likeCount} Like
+                              </LikeAndComment>{' '}
+                              <CommentOutlinedIcon />{' '}
+                              <LikeAndComment>
+                                {' '}
+                                {item.commentCount} comments
+                              </LikeAndComment>
+                            </Icons>
+                            <div>
+                              <ExpandAltOutlinedIcon />
+                            </div>
+                          </ContentIcon>
+                        </ContentPost>
+                      </Fragment>
+                    );
+                  })}
+                </CardPost>
+              </SideContent>
+            )}
+          </Fragment>
+        ) : (
+          <Skeleton active={activeLoading} />
+        )}
 
         <SideProfile>
-          <ContentProfile>
-            <Fragment>
-              <ContentAvatarProfile>
-                <input
-                  type='file'
-                  accept='image/*'
-                  name='userImage'
-                  id='userImage'
-                  style={{ display: 'none' }}
-                />
-                <Avatar size={210} />
-              </ContentAvatarProfile>
+          {!dataUserPage.user ? (
+            <Skeleton active={activeLoading} />
+          ) : (
+            <ContentProfile>
+              <Fragment>
+                <ContentAvatarProfile>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    name='userImage'
+                    id='userImage'
+                    style={{ display: 'none' }}
+                  />
+                  <Avatar size={210} src={dataUserPage.user.imageUrl} />
+                </ContentAvatarProfile>
 
-              <ContentUserName>
-                <LinkUserName href='#'>@asdasd</LinkUserName>
-              </ContentUserName>
-              <Profile>
-                <ContentProfileStyle>asdasdas</ContentProfileStyle>
+                <ContentUserName>
+                  <LinkUserName href='#'>
+                    @{dataUserPage.user.handle}
+                  </LinkUserName>
+                </ContentUserName>
+                <Profile>
+                  <ContentProfileStyle>
+                    {dataUserPage.user.bio}
+                  </ContentProfileStyle>
+                  <ContentProfileStyle>
+                    <EnvironmentOutlinedIcon /> {dataUserPage.user.location}
+                  </ContentProfileStyle>
+                  <ContentProfileStyle>
+                    <UserSite href='#' target='_blank'>
+                      <AliyunOutlinedIcon /> {dataUserPage.user.website}
+                    </UserSite>
+                  </ContentProfileStyle>
+                </Profile>
                 <ContentProfileStyle>
-                  <EnvironmentOutlinedIcon /> asdasdas
+                  <CalendarOutlinedIcon />
+                  {moment(dataUserPage.user.createdAt).format('MMM YYYY')}
                 </ContentProfileStyle>
-                <ContentProfileStyle>
-                  <UserSite href='#' target='_blank'>
-                    <AliyunOutlinedIcon /> asdasdassd
-                  </UserSite>
-                </ContentProfileStyle>
-              </Profile>
-              <ContentProfileStyle>
-                <CalendarOutlinedIcon />
-                asdasd
-              </ContentProfileStyle>
-            </Fragment>
-          </ContentProfile>
+              </Fragment>
+            </ContentProfile>
+          )}
         </SideProfile>
       </div>
     </Fragment>
