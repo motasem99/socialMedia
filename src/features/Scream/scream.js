@@ -5,18 +5,23 @@ export const ScreamsSlice = createSlice({
   name: 'scream',
   initialState: {
     screams: [],
+    commentData: {},
   },
   reducers: {
     setScreams: (state, action) => {
       state.screams = [...action.payload];
     },
+    setCommentData: (state, action) => {
+      state.commentData = { ...action.payload };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setScreams } = ScreamsSlice.actions;
+export const { setScreams, setCommentData } = ScreamsSlice.actions;
 
 export const selectScreams = (state) => state.screams.screams;
+export const selectCommentData = (state) => state.screams.commentData;
 
 export const getScreams = () => async (dispatch, getState) => {
   try {
@@ -135,5 +140,20 @@ export const disLikeScream =
       throw err;
     }
   };
+
+export const getScream = (screamId) => async (dispatch, getState) => {
+  try {
+    await axios
+      .get(`${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${screamId}`)
+      .then((res) => {
+        dispatch(setCommentData(res.data));
+      })
+      .catch((err) => {
+        console.log(err?.response?.data?.error);
+      });
+  } catch (err) {
+    throw err;
+  }
+};
 
 export default ScreamsSlice.reducer;

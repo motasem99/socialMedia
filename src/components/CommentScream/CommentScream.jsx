@@ -16,7 +16,7 @@ import { HeartTwoTone, HeartFilled, CommentOutlined } from '@ant-design/icons';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { addScreams } from '../../features/Scream/scream.js';
+import { addScreams, selectCommentData } from '../../features/Scream/scream.js';
 import { selectUser } from '../../features/user/userSlice.js';
 
 const ContentForm = styled.div`
@@ -137,6 +137,7 @@ const CommentScream = ({
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const commentData = useSelector(selectCommentData);
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();

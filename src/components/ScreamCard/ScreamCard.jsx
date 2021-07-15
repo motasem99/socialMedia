@@ -12,6 +12,7 @@ import {
   deletePost,
   likeScream,
   disLikeScream,
+  getScream,
 } from '../../features/Scream/scream.js';
 
 import {
@@ -160,6 +161,7 @@ const ScreamCard = ({
 
   const showModal = () => {
     setVisible(true);
+    dispatch(getScream(screamId));
   };
 
   return (
