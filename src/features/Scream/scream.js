@@ -86,4 +86,54 @@ export const deletePost = (postId, user) => async (dispatch, getState) => {
   }
 };
 
+export const likeScream =
+  (user, setLike, like, screamId) => async (dispatch, getState) => {
+    try {
+      await axios
+        .patch(
+          `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${screamId}/unlike`,
+          null,
+          {
+            headers: {
+              Authorization: 'Bearer ' + user,
+            },
+          }
+        )
+        .then((res) => {
+          setLike(false);
+          dispatch(getScreams());
+        })
+        .catch((err) => {
+          console.log(err?.response?.data?.error);
+        });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+export const disLikeScream =
+  (user, setLike, like, screamId) => async (dispatch, getState) => {
+    try {
+      await axios
+        .patch(
+          `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${screamId}/like`,
+          null,
+          {
+            headers: {
+              Authorization: 'Bearer ' + user,
+            },
+          }
+        )
+        .then((res) => {
+          setLike(true);
+          dispatch(getScreams());
+        })
+        .catch((err) => {
+          console.log(err?.response?.data?.error);
+        });
+    } catch (err) {
+      throw err;
+    }
+  };
+
 export default ScreamsSlice.reducer;

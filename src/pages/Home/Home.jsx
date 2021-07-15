@@ -5,12 +5,9 @@ import { Avatar } from 'antd';
 import { Skeleton } from 'antd';
 import moment from 'moment';
 
+import { useHistory } from 'react-router-dom';
+
 import {
-  HeartTwoTone,
-  HeartFilled,
-  CommentOutlined,
-  DeleteOutlined,
-  ExpandAltOutlined,
   EnvironmentOutlined,
   AliyunOutlined,
   EditOutlined,
@@ -27,11 +24,9 @@ import {
   selectUserData,
 } from '../../features/user/userSlice';
 
-import {
-  getScreams,
-  selectScreams,
-  deletePost,
-} from '../../features/Scream/scream.js';
+import { getScreams, selectScreams } from '../../features/Scream/scream.js';
+
+import ScreamCard from '../../components/ScreamCard/ScreamCard';
 
 import UserInfo from '../../components/UserInfo/UserInfo';
 
@@ -69,100 +64,6 @@ const ContentButtons = styled.div`
 
 const Para = styled.p`
   font-size: 1.2rem;
-`;
-
-const CardPost = styled.div`
-  width: 80%;
-  margin: 3rem auto;
-  height: 190px;
-  display: flex;
-  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
-    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
-`;
-
-const ContentAvatar = styled.div`
-  width: 23%;
-`;
-
-const ContentPost = styled.div`
-  padding: 1rem;
-  width: 77%;
-`;
-
-const ContentNameDelete = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const NameLink = styled.a`
-  margin-left: 1rem;
-  font-size: 1.5rem;
-`;
-
-const ParaDate = styled.p`
-  margin-left: 1rem;
-  margin-bottom: 0;
-  padding: 0.5rem 0;
-`;
-
-const ParaPost = styled.p`
-  margin-left: 1rem;
-  margin-bottom: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-`;
-
-const ContentIcon = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.5rem;
-  margin-left: 1rem;
-  align-items: end;
-`;
-
-const Icons = styled.div`
-  display: flex;
-`;
-
-const HeartTwoToneIcon = styled(HeartTwoTone)`
-  font-size: 1.7rem;
-  margin-right: 1rem;
-  cursor: pointer;
-`;
-
-const HeartFilledIcon = styled(HeartFilled)`
-  font-size: 1.7rem;
-  color: #1890ff;
-  margin-right: 1rem;
-  cursor: pointer;
-`;
-
-const CommentOutlinedIcon = styled(CommentOutlined)`
-  font-size: 2rem;
-  color: #1890ff;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  cursor: pointer;
-`;
-
-const LikeAndComment = styled.p`
-  font-size: 1.1rem;
-  font-weight: 400;
-`;
-
-const DeleteOutlinedIcon = styled(DeleteOutlined)`
-  font-size: 2rem;
-  color: red;
-  cursor: pointer;
-  padding: 0.4rem;
-`;
-
-const ExpandAltOutlinedIcon = styled(ExpandAltOutlined)`
-  font-size: 1.8rem;
-  color: #1890ff;
-  cursor: pointer;
 `;
 
 const SideProfile = styled.div`
@@ -261,7 +162,6 @@ const ContentEditUserPhoto = styled.div`
 `;
 
 const Home = () => {
-  const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const user = useSelector(selectUser);
   const screams = useSelector(selectScreams);
@@ -269,18 +169,15 @@ const Home = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
   const [activeLoading, setActiveLoading] = useState(true);
+  const history = useHistory();
 
   const showModal = () => {
     setVisible(true);
   };
 
-  const handleDislike = () => {
-    setLike(false);
-  };
-
-  const handleLike = () => {
-    setLike(true);
-  };
+  // const handleDislike = () => {
+  //   setLike(false);
+  // };
 
   const handleChange = (e) => {
     try {
@@ -310,55 +207,18 @@ const Home = () => {
       <SideContent>
         {screams?.map((item) => {
           return (
-            <CardPost>
-              {!item ? (
-                <Skeleton active={activeLoading} />
-              ) : (
-                <Fragment>
-                  <ContentAvatar>
-                    <Avatar shape='square' size={190} src={item.userImage} />
-                  </ContentAvatar>
-                  <ContentPost>
-                    <ContentNameDelete>
-                      <NameLink href={`/userPage/?handle=${item.userHandle}`}>
-                        {item.userHandle}
-                      </NameLink>
-                      {credentials?.handle === item.userHandle ? (
-                        <DeleteOutlinedIcon
-                          onClick={() =>
-                            dispatch(deletePost(item.screamId, user))
-                          }
-                        />
-                      ) : (
-                        ''
-                      )}
-                    </ContentNameDelete>
-                    <ParaDate>
-                      {moment(item?.createdAt).format('MMM YYYY')}
-                    </ParaDate>
-                    <ParaPost>{item.body}</ParaPost>
-                    <ContentIcon>
-                      <Icons>
-                        {like ? (
-                          <HeartFilledIcon onClick={handleDislike} />
-                        ) : (
-                          <HeartTwoToneIcon onClick={handleLike} />
-                        )}
-                        <LikeAndComment> {item.likeCount} Like</LikeAndComment>{' '}
-                        <CommentOutlinedIcon />{' '}
-                        <LikeAndComment>
-                          {' '}
-                          {item.commentCount} comments
-                        </LikeAndComment>
-                      </Icons>
-                      <div>
-                        <ExpandAltOutlinedIcon />
-                      </div>
-                    </ContentIcon>
-                  </ContentPost>
-                </Fragment>
-              )}
-            </CardPost>
+            <ScreamCard
+              key={item.screamId}
+              credentials={credentials}
+              user={user}
+              screamId={item.screamId}
+              userImage={item.userImage}
+              userHandle={item.userHandle}
+              body={item.body}
+              likeCount={item.likeCount}
+              commentCount={item.commentCount}
+              createdAt={item.createdAt}
+            />
           );
         })}
       </SideContent>
@@ -366,7 +226,7 @@ const Home = () => {
       {user ? (
         <SideProfile>
           <ContentProfile>
-            {!credentials ? (
+            {!credentials?.credentials ? (
               <Skeleton active={activeLoading} />
             ) : (
               <Fragment>
@@ -380,7 +240,7 @@ const Home = () => {
                     onChange={handleChange}
                   />
                   <label htmlFor='userImage'>
-                    <Avatar size={210} src={credentials.imageUrl} />
+                    <Avatar size={210} src={credentials.credentials.imageUrl} />
                     <ContentEditUserPhoto>
                       <EditOutlinedIcon />
                     </ContentEditUserPhoto>
@@ -388,23 +248,33 @@ const Home = () => {
                 </ContentAvatarProfile>
 
                 <ContentUserName>
-                  <LinkUserName href='#'>@{credentials?.handle}</LinkUserName>
+                  <LinkUserName href='#'>
+                    @{credentials.credentials?.handle}
+                  </LinkUserName>
                 </ContentUserName>
                 <Profile>
-                  <ContentProfileStyle>{credentials?.bio}</ContentProfileStyle>
                   <ContentProfileStyle>
-                    <EnvironmentOutlinedIcon /> {credentials.location}
+                    {credentials.credentials?.bio}
                   </ContentProfileStyle>
                   <ContentProfileStyle>
-                    <UserSite href={credentials?.website} target='_blank'>
-                      <AliyunOutlinedIcon /> {credentials?.website}
+                    <EnvironmentOutlinedIcon />{' '}
+                    {credentials.credentials.location}
+                  </ContentProfileStyle>
+                  <ContentProfileStyle>
+                    <UserSite
+                      href={credentials.credentials?.website}
+                      target='_blank'
+                    >
+                      <AliyunOutlinedIcon /> {credentials.credentials?.website}
                     </UserSite>
                   </ContentProfileStyle>
                 </Profile>
                 <ContentProfileStyle>
                   <CalendarOutlinedIcon />
-                  {credentials &&
-                    moment(credentials?.createdAt).format('MMM YYYY')}
+                  {credentials.credentials &&
+                    moment(credentials.credentials?.createdAt).format(
+                      'MMM YYYY'
+                    )}
                 </ContentProfileStyle>
                 <LogoutAndData>
                   <LogoutOutlinedIcon
@@ -422,7 +292,7 @@ const Home = () => {
           <UserInfo
             visible={visible}
             setVisible={setVisible}
-            data={credentials}
+            data={credentials?.credentials}
           />
         </SideProfile>
       ) : (
@@ -430,8 +300,22 @@ const Home = () => {
           <ContentSideLogin>
             <Para>No profile found, please login again</Para>
             <ContentButtons>
-              <Button type='primary'>Login</Button>
-              <Button type='primary' danger>
+              <Button
+                type='primary'
+                to='/login'
+                onClick={() => {
+                  history.push('/login');
+                }}
+              >
+                Login
+              </Button>
+              <Button
+                type='primary'
+                danger
+                onClick={() => {
+                  history.push('/signup');
+                }}
+              >
                 Signup
               </Button>
             </ContentButtons>

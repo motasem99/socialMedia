@@ -152,7 +152,7 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
         },
       })
       .then((res) => {
-        dispatch(setUserData(res.data.credentials));
+        dispatch(setUserData(res.data));
       })
       .catch((err) => {
         console.log(err?.response?.data?.error);
