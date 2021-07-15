@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Avatar } from 'antd';
 import moment from 'moment';
 
+import CommentScream from '../CommentScream/CommentScream.jsx';
+
 import { useHistory } from 'react-router';
 
 import { useDispatch } from 'react-redux';
@@ -129,6 +131,7 @@ const ScreamCard = ({
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();
   const [like, setLike] = useState(false);
+  const [visible, setVisible] = React.useState(false);
 
   const handleLike = (screamId) => {
     if (!itemLocalStorage) {
@@ -154,6 +157,10 @@ const ScreamCard = ({
       setLike(false);
     }
   }, [credentials?.likes, screamId]);
+
+  const showModal = () => {
+    setVisible(true);
+  };
 
   return (
     <CardPost key={screamId}>
@@ -189,9 +196,10 @@ const ScreamCard = ({
             <LikeAndComment> {commentCount} comments</LikeAndComment>
           </Icons>
           <div>
-            <ExpandAltOutlinedIcon />
+            <ExpandAltOutlinedIcon onClick={showModal} />
           </div>
         </ContentIcon>
+        <CommentScream visible={visible} setVisible={setVisible} />
       </ContentPost>
     </CardPost>
   );
