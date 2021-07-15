@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 
 import styled from 'styled-components';
 import { Form, Input } from 'antd';
 import { Alert } from 'antd';
 import { Avatar } from 'antd';
+
+import moment from 'moment';
 
 import { likeScream, disLikeScream } from '../../features/Scream/scream.js';
 
@@ -115,7 +117,18 @@ const ModalContent = styled(Modal)`
   }
 `;
 
-const CommentScream = ({ visible, setVisible }) => {
+const CommentScream = ({
+  visible,
+  setVisible,
+  screamId,
+  userImage,
+  userHandle,
+  body,
+  likeCount,
+  commentCount,
+  createdAt,
+  credentials,
+}) => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     post: '',
@@ -127,6 +140,17 @@ const CommentScream = ({ visible, setVisible }) => {
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();
+
+  useEffect(() => {
+    if (
+      credentials?.likes &&
+      credentials?.likes.map((item) => item.screamId).includes(screamId)
+    ) {
+      setLike(true);
+    } else {
+      setLike(false);
+    }
+  }, [credentials?.likes, screamId]);
 
   const handleLike = (screamId) => {
     if (!itemLocalStorage) {
@@ -169,25 +193,28 @@ const CommentScream = ({ visible, setVisible }) => {
         <div style={{ display: 'flex' }}>
           <div>
             {' '}
-            <Avatar size={190} />
+            <Avatar size={190} src={userImage} />
           </div>
           <ContentPost>
             <ContentNameDelete>
-              <NameLink href={`/userPage`}>asdasd</NameLink>
+              <NameLink href={`/userPage/?handle=${userHandle}`}>
+                {userHandle}
+              </NameLink>
             </ContentNameDelete>
-            <ParaDate>asdasd</ParaDate>
-            <ParaPost>asdasd</ParaPost>
+            <ParaDate>{moment(createdAt).fromNow()}</ParaDate>
+            <ParaPost>{body}</ParaPost>
             <ContentIcon>
               <Icons>
                 <div>
                   {like ? (
-                    <HeartFilledIcon onClick={() => handleLike()} />
+                    <HeartFilledIcon onClick={() => handleLike(screamId)} />
                   ) : (
-                    <HeartTwoToneIcon onClick={() => handleDisLike()} />
+                    <HeartTwoToneIcon onClick={() => handleDisLike(screamId)} />
                   )}
                 </div>
-                <LikeAndComment> 3 Like</LikeAndComment> <CommentOutlinedIcon />{' '}
-                <LikeAndComment> 4 comments</LikeAndComment>
+                <LikeAndComment> {likeCount} Like</LikeAndComment>{' '}
+                <CommentOutlinedIcon />{' '}
+                <LikeAndComment> {commentCount} comments</LikeAndComment>
               </Icons>
             </ContentIcon>
           </ContentPost>

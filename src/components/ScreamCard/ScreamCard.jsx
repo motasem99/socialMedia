@@ -199,7 +199,18 @@ const ScreamCard = ({
             <ExpandAltOutlinedIcon onClick={showModal} />
           </div>
         </ContentIcon>
-        <CommentScream visible={visible} setVisible={setVisible} />
+        <CommentScream
+          visible={visible}
+          setVisible={setVisible}
+          screamId={screamId}
+          userImage={userImage}
+          userHandle={userHandle}
+          body={body}
+          likeCount={likeCount}
+          commentCount={commentCount}
+          createdAt={createdAt}
+          credentials={credentials}
+        />
       </ContentPost>
     </CardPost>
   );
