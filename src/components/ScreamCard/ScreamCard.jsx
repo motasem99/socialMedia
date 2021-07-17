@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { Avatar } from 'antd';
 import moment from 'moment';
+
+import { Modal, Button } from 'antd';
 
 import CommentScream from '../CommentScream/CommentScream.jsx';
 
@@ -117,6 +119,12 @@ const ExpandAltOutlinedIcon = styled(ExpandAltOutlined)`
   cursor: pointer;
 `;
 
+const ModalContent = styled(Modal)`
+  .ant-modal-content {
+    top: 350px;
+  }
+`;
+
 const ScreamCard = ({
   screamId,
   userImage,
@@ -133,6 +141,19 @@ const ScreamCard = ({
   const history = useHistory();
   const [like, setLike] = useState(false);
   const [visible, setVisible] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModalDelete = () => {
+    setIsModalVisible(true);
+  };
+
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  // };
+
+  const handleCancelDelete = () => {
+    setIsModalVisible(false);
+  };
 
   const handleLike = (screamId) => {
     if (!itemLocalStorage) {
@@ -175,9 +196,16 @@ const ScreamCard = ({
             {userHandle}
           </NameLink>
           {credentials?.credentials?.handle === userHandle ? (
-            <DeleteOutlinedIcon
-              onClick={() => dispatch(deletePost(screamId, user))}
-            />
+            <Fragment>
+              <DeleteOutlinedIcon onClick={showModalDelete} />
+              <ModalContent
+                visible={isModalVisible}
+                onOk={() => dispatch(deletePost(screamId, user))}
+                onCancel={handleCancelDelete}
+              >
+                <h3>Are you sure want to delete this post</h3>
+              </ModalContent>
+            </Fragment>
           ) : (
             ''
           )}

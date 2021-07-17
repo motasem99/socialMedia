@@ -175,10 +175,6 @@ const Home = () => {
     setVisible(true);
   };
 
-  // const handleDislike = () => {
-  //   setLike(false);
-  // };
-
   const handleChange = (e) => {
     try {
       const image = e.target.files[0];
