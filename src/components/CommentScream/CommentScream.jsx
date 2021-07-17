@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Modal } from 'antd';
 
 import styled from 'styled-components';
-import { Form, Input } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { Alert } from 'antd';
 import { Avatar } from 'antd';
+import { Skeleton } from 'antd';
 
 import moment from 'moment';
 
@@ -114,8 +115,13 @@ const Container = styled.div``;
 const ModalContent = styled(Modal)`
   .ant-modal-content {
     width: 600px;
+    .ant-modal-footer {
+      display: none;
+    }
   }
 `;
+
+const SubmitButton = styled(Button)``;
 
 const CommentScream = ({
   visible,
@@ -141,6 +147,7 @@ const CommentScream = ({
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();
+  const [activeLoading, setActiveLoading] = useState(true);
 
   useEffect(() => {
     if (
@@ -170,9 +177,7 @@ const CommentScream = ({
   const onFinish = (e) => {
     try {
       form.submit();
-      // dispatch(
-      //   addScreams(formData, user, setError, setConfirmLoading, setVisible)
-      // );
+      setActiveLoading(true);
       dispatch(
         addComment(
           formData,
@@ -183,6 +188,7 @@ const CommentScream = ({
           screamId
         )
       );
+      setActiveLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -195,12 +201,7 @@ const CommentScream = ({
 
   return (
     <Container>
-      <ModalContent
-        visible={visible}
-        onOk={onFinish}
-        confirmLoading={confirmLoading}
-        onCancel={onFinishFailed}
-      >
+      <ModalContent visible={visible}>
         <div style={{ display: 'flex' }}>
           <div>
             {' '}
@@ -260,8 +261,56 @@ const CommentScream = ({
             >
               <Input />
             </Form.Item>
+
+            <div
+              style={{
+                display: 'flex',
+                width: '35%',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Form.Item>
+                <SubmitButton
+                  type='primary'
+                  onClick={onFinish}
+                  confirmLoading={confirmLoading}
+                >
+                  add comment
+                </SubmitButton>
+              </Form.Item>
+
+              <Form.Item>
+                <SubmitButton onClick={onFinishFailed}>cancel</SubmitButton>
+              </Form.Item>
+            </div>
           </FormContent>
         </ContentForm>
+
+        {!commentData.comments ? (
+          <Skeleton active={activeLoading} />
+        ) : (
+          <Fragment>
+            {commentData?.comments?.map((item) => {
+              return (
+                <div style={{ display: 'flex' }}>
+                  <div>
+                    {' '}
+                    <Avatar size={120} src={item.userImage} />
+                  </div>
+                  <ContentPost>
+                    <ContentNameDelete>
+                      <NameLink href={`/userPage/?handle=${item.userHandle}`}>
+                        {item.userHandle}
+                      </NameLink>
+                    </ContentNameDelete>
+                    <ParaDate>{moment(item.createdAt).fromNow()}</ParaDate>
+                    <ParaPost>{item.body}</ParaPost>
+                  </ContentPost>
+                </div>
+              );
+            })}
+          </Fragment>
+        )}
       </ModalContent>
     </Container>
   );

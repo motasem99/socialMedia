@@ -160,7 +160,7 @@ export const addComment =
   (formData, user, setError, setConfirmLoading, setVisible, screamId) =>
   async (dispatch, getState) => {
     try {
-      console.log(formData.comment);
+      setConfirmLoading(true);
       await axios
         .post(
           `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${screamId}/comment`,
@@ -175,11 +175,12 @@ export const addComment =
         )
         .then((res) => {
           dispatch(getScreams());
-          console.log(res.data);
+          dispatch(getScream(screamId));
         })
         .catch((err) => {
-          console.log(err?.response?.data?.error);
+          setError(err?.response?.data?.error);
         });
+      setConfirmLoading(false);
     } catch (err) {
       throw err;
     }
