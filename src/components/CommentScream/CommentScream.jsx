@@ -198,10 +198,9 @@ const CommentScream = ({
     console.log('Failed:', e);
     setVisible(false);
   };
-
   return (
     <Container>
-      <ModalContent visible={visible}>
+      <ModalContent visible={visible} onCancel={onFinishFailed}>
         <div style={{ display: 'flex' }}>
           <div>
             {' '}
@@ -241,49 +240,49 @@ const CommentScream = ({
               showIcon
             />
           )}
-          <FormContent
-            form={form}
-            name='basic'
-            layout='vertical'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-          >
-            <Form.Item
-              label='Add You Comment'
-              name='post'
-              onChange={(e) => {
-                setFormData({ ...formData, comment: e.target.value });
-              }}
-              rules={[
-                { required: true, message: 'Please input your comment!' },
-              ]}
+          {!itemLocalStorage ? (
+            ''
+          ) : (
+            <FormContent
+              form={form}
+              name='basic'
+              layout='vertical'
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
             >
-              <Input />
-            </Form.Item>
-
-            <div
-              style={{
-                display: 'flex',
-                width: '35%',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Form.Item>
-                <SubmitButton
-                  type='primary'
-                  onClick={onFinish}
-                  confirmLoading={confirmLoading}
-                >
-                  add comment
-                </SubmitButton>
+              <Form.Item
+                label='Add You Comment'
+                name='post'
+                onChange={(e) => {
+                  setFormData({ ...formData, comment: e.target.value });
+                }}
+                rules={[
+                  { required: true, message: 'Please input your comment!' },
+                ]}
+              >
+                <Input />
               </Form.Item>
 
-              <Form.Item>
-                <SubmitButton onClick={onFinishFailed}>cancel</SubmitButton>
-              </Form.Item>
-            </div>
-          </FormContent>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '35%',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Form.Item>
+                  <SubmitButton
+                    type='primary'
+                    onClick={onFinish}
+                    confirmLoading={confirmLoading}
+                  >
+                    add comment
+                  </SubmitButton>
+                </Form.Item>
+              </div>
+            </FormContent>
+          )}
         </ContentForm>
 
         {!commentData.comments ? (
