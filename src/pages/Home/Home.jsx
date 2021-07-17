@@ -249,21 +249,28 @@ const Home = () => {
                   </LinkUserName>
                 </ContentUserName>
                 <Profile>
-                  <ContentProfileStyle>
-                    {credentials.credentials?.bio}
-                  </ContentProfileStyle>
-                  <ContentProfileStyle>
-                    <EnvironmentOutlinedIcon />{' '}
-                    {credentials.credentials.location}
-                  </ContentProfileStyle>
-                  <ContentProfileStyle>
-                    <UserSite
-                      href={credentials.credentials?.website}
-                      target='_blank'
-                    >
-                      <AliyunOutlinedIcon /> {credentials.credentials?.website}
-                    </UserSite>
-                  </ContentProfileStyle>
+                  {credentials.credentials.bio && (
+                    <ContentProfileStyle>
+                      {credentials.credentials?.bio}
+                    </ContentProfileStyle>
+                  )}
+                  {credentials.credentials.location && (
+                    <ContentProfileStyle>
+                      <EnvironmentOutlinedIcon />{' '}
+                      {credentials.credentials.location}
+                    </ContentProfileStyle>
+                  )}
+                  {credentials.credentials.website && (
+                    <ContentProfileStyle>
+                      <UserSite
+                        href={credentials.credentials?.website}
+                        target='_blank'
+                      >
+                        <AliyunOutlinedIcon />{' '}
+                        {credentials.credentials?.website}
+                      </UserSite>
+                    </ContentProfileStyle>
+                  )}
                 </Profile>
                 <ContentProfileStyle>
                   <CalendarOutlinedIcon />
