@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Avatar } from 'antd';
 import moment from 'moment';
 
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 import CommentScream from '../CommentScream/CommentScream.jsx';
 
