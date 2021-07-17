@@ -156,4 +156,33 @@ export const getScream = (screamId) => async (dispatch, getState) => {
   }
 };
 
+export const addComment =
+  (formData, user, setError, setConfirmLoading, setVisible, screamId) =>
+  async (dispatch, getState) => {
+    try {
+      console.log(formData.comment);
+      await axios
+        .post(
+          `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/screams/${screamId}/comment`,
+          {
+            body: formData.comment,
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + user,
+            },
+          }
+        )
+        .then((res) => {
+          dispatch(getScreams());
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err?.response?.data?.error);
+        });
+    } catch (err) {
+      throw err;
+    }
+  };
+
 export default ScreamsSlice.reducer;

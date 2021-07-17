@@ -16,14 +16,14 @@ import { HeartTwoTone, HeartFilled, CommentOutlined } from '@ant-design/icons';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { addScreams, selectCommentData } from '../../features/Scream/scream.js';
+import { addComment, selectCommentData } from '../../features/Scream/scream.js';
 import { selectUser } from '../../features/user/userSlice.js';
 
 const ContentForm = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 2rem auto;
   width: 100%;
 `;
 
@@ -131,7 +131,7 @@ const CommentScream = ({
 }) => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
-    post: '',
+    comment: '',
   });
   const [error, setError] = useState();
   const [confirmLoading, setConfirmLoading] = React.useState(false);
@@ -141,8 +141,6 @@ const CommentScream = ({
   const [like, setLike] = useState(false);
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();
-
-  console.log(commentData);
 
   useEffect(() => {
     if (
@@ -172,8 +170,18 @@ const CommentScream = ({
   const onFinish = (e) => {
     try {
       form.submit();
+      // dispatch(
+      //   addScreams(formData, user, setError, setConfirmLoading, setVisible)
+      // );
       dispatch(
-        addScreams(formData, user, setError, setConfirmLoading, setVisible)
+        addComment(
+          formData,
+          user,
+          setError,
+          setConfirmLoading,
+          setVisible,
+          screamId
+        )
       );
     } catch (err) {
       console.log(err);
@@ -241,12 +249,14 @@ const CommentScream = ({
             initialValues={{ remember: true }}
           >
             <Form.Item
-              label='Add Your Post'
+              label='Add You Comment'
               name='post'
               onChange={(e) => {
-                setFormData({ ...formData, post: e.target.value });
+                setFormData({ ...formData, comment: e.target.value });
               }}
-              rules={[{ required: true, message: 'Please input your Post!' }]}
+              rules={[
+                { required: true, message: 'Please input your comment!' },
+              ]}
             >
               <Input />
             </Form.Item>
