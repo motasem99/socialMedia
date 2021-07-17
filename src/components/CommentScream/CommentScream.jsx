@@ -142,6 +142,8 @@ const CommentScream = ({
   const itemLocalStorage = localStorage.getItem('token');
   const history = useHistory();
 
+  console.log(commentData);
+
   useEffect(() => {
     if (
       credentials?.likes &&

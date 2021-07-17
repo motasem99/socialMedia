@@ -155,6 +155,7 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
         dispatch(setUserData(res.data));
       })
       .catch((err) => {
+        localStorage.removeItem('token');
         console.log(err?.response?.data?.error);
       });
   } catch (err) {
