@@ -147,10 +147,6 @@ const ScreamCard = ({
     setIsModalVisible(true);
   };
 
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  // };
-
   const handleCancelDelete = () => {
     setIsModalVisible(false);
   };
