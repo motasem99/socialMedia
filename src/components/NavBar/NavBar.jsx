@@ -10,6 +10,10 @@ import styled from 'styled-components';
 
 import AddPost from '../../components/AddPost/AddPost';
 
+import { Menu } from 'antd';
+import { Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+
 const Container = styled.div`
   width: 100%;
   height: 70px;
@@ -69,6 +73,10 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
 
+  const handleClickMenu = (e) => {
+    console.log('click ', e);
+  };
+
   const showModal = () => {
     setVisible(true);
   };
@@ -85,13 +93,31 @@ const NavBar = () => {
     }
   }, [dispatch, itemLocalStorage]);
 
+  const menu = (
+    <Menu>
+      <Menu.Item key='0'>
+        <a href='#'>1st menu item</a>
+      </Menu.Item>
+      <Menu.Item key='1'>
+        <a href='#'>2nd menu item</a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key='3'>3rd menu item</Menu.Item>
+    </Menu>
+  );
+
   return (
     <Container>
       {user ? (
         <ContainerUserExists>
           <PlusOutlinedIcon onClick={showModal} />
           <HomeOutlinedIcon onClick={handleClick} />
-          <BellOutlinedIcon />
+          <Dropdown overlay={menu} trigger={['click']}>
+            <BellOutlinedIcon
+              className='ant-dropdown-link'
+              onClick={(e) => e.preventDefault()}
+            />
+          </Dropdown>
 
           <AddPost visible={visible} setVisible={setVisible} />
         </ContainerUserExists>
