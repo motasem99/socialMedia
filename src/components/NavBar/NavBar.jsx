@@ -12,7 +12,9 @@ import AddPost from '../../components/AddPost/AddPost';
 
 import { Menu } from 'antd';
 import { Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Badge } from 'antd';
+
+import { HeartFilled, CommentOutlined } from '@ant-design/icons';
 
 const Container = styled.div`
   width: 100%;
@@ -66,6 +68,40 @@ const SignupButton = styled(Button)`
   font-weight: 500;
 `;
 
+const HeartFilledIcon = styled(HeartFilled)`
+  font-size: 1.7rem;
+  color: #1890ff;
+  cursor: pointer;
+  margin-right: 0.8rem;
+`;
+
+const CommentOutlinedIcon = styled(CommentOutlined)`
+  font-size: 2rem;
+  color: #1890ff;
+  cursor: pointer;
+  margin-right: 0.8rem;
+`;
+
+const ContentComment = styled.p`
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+`;
+
+const HeartFilledIconNotRead = styled(HeartFilled)`
+  font-size: 1.7rem;
+  color: red;
+  cursor: pointer;
+  margin-right: 0.8rem;
+`;
+
+const CommentOutlinedIconNotRead = styled(CommentOutlined)`
+  font-size: 2rem;
+  color: red;
+  cursor: pointer;
+  margin-right: 0.8rem;
+`;
+
 const NavBar = () => {
   let history = useHistory();
   const itemLocalStorage = localStorage.getItem('token');
@@ -73,9 +109,9 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
 
-  const handleClickMenu = (e) => {
-    console.log('click ', e);
-  };
+  // const handleClickMenu = (e) => {
+  //   console.log('click ', e);
+  // };
 
   const showModal = () => {
     setVisible(true);
@@ -96,13 +132,22 @@ const NavBar = () => {
   const menu = (
     <Menu>
       <Menu.Item key='0'>
-        <a href='#'>1st menu item</a>
+        <ContentComment>
+          <HeartFilledIcon /> name likeOrComment your scream theDate
+        </ContentComment>
+
+        <ContentComment>
+          <HeartFilledIconNotRead /> name likeOrComment your scream theDate
+        </ContentComment>
+
+        <ContentComment>
+          <CommentOutlinedIcon /> name likeOrComment your scream theDate
+        </ContentComment>
+
+        <ContentComment>
+          <CommentOutlinedIconNotRead /> name likeOrComment your scream theDate
+        </ContentComment>
       </Menu.Item>
-      <Menu.Item key='1'>
-        <a href='#'>2nd menu item</a>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key='3'>3rd menu item</Menu.Item>
     </Menu>
   );
 
@@ -112,12 +157,14 @@ const NavBar = () => {
         <ContainerUserExists>
           <PlusOutlinedIcon onClick={showModal} />
           <HomeOutlinedIcon onClick={handleClick} />
-          <Dropdown overlay={menu} trigger={['click']}>
-            <BellOutlinedIcon
-              className='ant-dropdown-link'
-              onClick={(e) => e.preventDefault()}
-            />
-          </Dropdown>
+          <Badge count={5}>
+            <Dropdown overlay={menu} trigger={['click']}>
+              <BellOutlinedIcon
+                className='ant-dropdown-link'
+                onClick={(e) => e.preventDefault()}
+              />
+            </Dropdown>
+          </Badge>
 
           <AddPost visible={visible} setVisible={setVisible} />
         </ContainerUserExists>
