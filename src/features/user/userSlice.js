@@ -7,6 +7,9 @@ export const counterSlice = createSlice({
     user: null,
     credentials: null,
     userDataPage: {},
+    notifications: [],
+    countNotifications: 0,
+    unReadNotifications: [],
   },
   reducers: {
     setUser: (state, action) => {
@@ -18,15 +21,36 @@ export const counterSlice = createSlice({
     setUserDataPage: (state, action) => {
       state.userDataPage = action.payload;
     },
+    setNotifications: (state, action) => {
+      state.notifications = action.payload;
+    },
+    setCountNotifications: (state, action) => {
+      state.countNotifications = action.payload;
+    },
+    setUnReadNotifications: (state, action) => {
+      state.unReadNotifications = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setUserData, setUserDataPage } = counterSlice.actions;
+export const {
+  setUser,
+  setUserData,
+  setUserDataPage,
+  setNotifications,
+  setCountNotifications,
+  setUnReadNotifications,
+} = counterSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 export const selectUserData = (state) => state.user.credentials;
 export const selectUserDataPage = (state) => state.user.userDataPage;
+export const selectNotifications = (state) => state.user.notifications;
+export const selectCountNotifications = (state) =>
+  state.user.countNotifications;
+export const selectUnReadNotification = (state) =>
+  state.user.unReadNotification;
 
 export const signup =
   (data, setError, setSpinnerLoading) => async (dispatch, getState) => {
@@ -153,6 +177,18 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
       })
       .then((res) => {
         dispatch(setUserData(res.data));
+        dispatch(setNotifications(res.data.notifications));
+        let countUnreadNotification = 0;
+        let unReadNotification = [];
+        res.data.notifications.map((item) => {
+          if (!item.read) {
+            ++countUnreadNotification;
+            unReadNotification.push(item.notificationId);
+            console.log(item);
+          }
+        });
+        dispatch(setCountNotifications(countUnreadNotification));
+        dispatch(setUnReadNotifications(unReadNotification));
       })
       .catch((err) => {
         localStorage.removeItem('token');
