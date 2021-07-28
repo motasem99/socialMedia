@@ -4,7 +4,14 @@ import { BellOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, setUser } from '../../features/user/userSlice';
+import {
+  selectUser,
+  setUser,
+  readNotification,
+  selectNotifications,
+  selectCountNotifications,
+  selectUnReadNotifications,
+} from '../../features/user/userSlice';
 
 import styled from 'styled-components';
 
@@ -108,6 +115,9 @@ const NavBar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [visible, setVisible] = React.useState(false);
+  const countNotifications = useSelector(selectCountNotifications);
+  const unReadNot = useSelector(selectUnReadNotifications);
+  const notification = useSelector(selectNotifications);
 
   // const handleClickMenu = (e) => {
   //   console.log('click ', e);
@@ -127,7 +137,7 @@ const NavBar = () => {
     } else {
       dispatch(setUser(null));
     }
-  }, [dispatch, itemLocalStorage]);
+  }, [dispatch, itemLocalStorage, unReadNot]);
 
   const menu = (
     <Menu>
@@ -157,11 +167,14 @@ const NavBar = () => {
         <ContainerUserExists>
           <PlusOutlinedIcon onClick={showModal} />
           <HomeOutlinedIcon onClick={handleClick} />
-          <Badge count={5}>
+          <Badge count={countNotifications}>
             <Dropdown overlay={menu} trigger={['click']}>
               <BellOutlinedIcon
                 className='ant-dropdown-link'
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(readNotification(itemLocalStorage, unReadNot));
+                }}
               />
             </Dropdown>
           </Badge>

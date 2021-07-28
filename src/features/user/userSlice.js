@@ -49,8 +49,8 @@ export const selectUserDataPage = (state) => state.user.userDataPage;
 export const selectNotifications = (state) => state.user.notifications;
 export const selectCountNotifications = (state) =>
   state.user.countNotifications;
-export const selectUnReadNotification = (state) =>
-  state.user.unReadNotification;
+export const selectUnReadNotifications = (state) =>
+  state.user.unReadNotifications;
 
 export const signup =
   (data, setError, setSpinnerLoading) => async (dispatch, getState) => {
@@ -184,7 +184,6 @@ export const getUserProfile = (user) => async (dispatch, getState) => {
           if (!item.read) {
             ++countUnreadNotification;
             unReadNotification.push(item.notificationId);
-            console.log(item);
           }
         });
         dispatch(setCountNotifications(countUnreadNotification));
@@ -213,5 +212,31 @@ export const getUserPage = (handle) => async (dispatch, getState) => {
     throw err;
   }
 };
+
+export const readNotification =
+  (user, unread) => async (dispatch, getState) => {
+    try {
+      await axios
+        .patch(
+          `${process.env.REACT_APP_SOCIAL_MEDIA_URL}/api/notifications/makeRead`,
+          {
+            notifications: unread,
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + user,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      throw err;
+    }
+  };
 
 export default counterSlice.reducer;
