@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Button } from 'antd';
 import { BellOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
@@ -22,6 +22,7 @@ import { Dropdown } from 'antd';
 import { Badge } from 'antd';
 
 import { HeartFilled, CommentOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const Container = styled.div`
   width: 100%;
@@ -119,6 +120,8 @@ const NavBar = () => {
   const unReadNot = useSelector(selectUnReadNotifications);
   const notification = useSelector(selectNotifications);
 
+  console.log(notification);
+
   // const handleClickMenu = (e) => {
   //   console.log('click ', e);
   // };
@@ -141,23 +144,46 @@ const NavBar = () => {
 
   const menu = (
     <Menu>
-      <Menu.Item key='0'>
-        <ContentComment>
-          <HeartFilledIcon /> name likeOrComment your scream theDate
-        </ContentComment>
-
-        <ContentComment>
-          <HeartFilledIconNotRead /> name likeOrComment your scream theDate
-        </ContentComment>
-
-        <ContentComment>
-          <CommentOutlinedIcon /> name likeOrComment your scream theDate
-        </ContentComment>
-
-        <ContentComment>
-          <CommentOutlinedIconNotRead /> name likeOrComment your scream theDate
-        </ContentComment>
-      </Menu.Item>
+      {notification.map((item) => {
+        return (
+          <Menu.Item key='0'>
+            {item.read ? (
+              <ContentComment>
+                {item.type === 'comment' ? (
+                  <Fragment>
+                    <CommentOutlinedIcon /> {item.sender} {item.type} your
+                    scream{'  '}
+                    {moment(item.createdAt).fromNow()}
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <HeartFilledIcon /> {item.sender} {item.type} your scream
+                    {'  '}
+                    {moment(item.createdAt).fromNow()}
+                  </Fragment>
+                )}
+              </ContentComment>
+            ) : (
+              <ContentComment>
+                {item.type === 'comment' ? (
+                  <Fragment>
+                    <CommentOutlinedIconNotRead /> {item.sender} {item.type}{' '}
+                    your scream{'  '}
+                    {moment(item.createdAt).fromNow()}
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <HeartFilledIconNotRead /> {item.sender} {item.type} your
+                    scream
+                    {'  '}
+                    {moment(item.createdAt).fromNow()}
+                  </Fragment>
+                )}
+              </ContentComment>
+            )}
+          </Menu.Item>
+        );
+      })}
     </Menu>
   );
 
